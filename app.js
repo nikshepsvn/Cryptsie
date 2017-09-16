@@ -54,9 +54,17 @@ server.post('/api/messages', connector.listen());
 var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
     var msg = session.message.text;
+    var potentialQuery = msg.trim().toLowerCase();
+    if(potentialQuery == "!price=ETH"){
+
+    } else if(potentialQuery == "!price=BTC"){
+
+    } else if(potentialQuery == "!price=LTC"){
+
+    }
    	//session.send(test(msg));
    session.send("Hi");
-   //session.send(pricetools.getPriceFunc("ETH", "GBP"));
+   session.send(pricetools.getPriceFunc("ETH", "GBP"));
 });
 
 
