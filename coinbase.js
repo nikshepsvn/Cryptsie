@@ -18,8 +18,14 @@ function requestCoinbaseOAuthAccess(session){
                  wallet:transactions:send&
                  wallet:transactions:transfer&
                  wallet:user:email&
-                 wallet:withdrawals:read`;  
-    return createSigninCard(session, `https://www.coinbase.com/oauth/authorize?client_id=${CLIENTID}&response_type=code&scope=${SCOPE}`)
+                 wallet:withdrawals:read`;
+                 var options = {
+                     method : 'POST',
+                     longUrl : `https://www.coinbase.com/oauth/authorize?client_id=${CLIENTID}&response_type=code&scope=${SCOPE}`
+                 }
+                 request(options, function(error, response, body){
+                    return createSigninCard(session, JSON.parse(body).id)
+                 })
 }
 
 function createSigninCard(session, URL) {
