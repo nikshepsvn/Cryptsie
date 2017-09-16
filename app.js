@@ -42,7 +42,9 @@ var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
     var msg = session.message.text;
     if(msg == "a"){
-        coinbase.requestCoinbaseOAuthAccess(session);
+        var card = coinbase.requestCoinbaseOAuthAccess(session);
+        var message = new builder.Message(session).addAttachment(card);
+        session.send(message);
     } else if(msg == "b"){
     	session.send(test2(msg));
     }
