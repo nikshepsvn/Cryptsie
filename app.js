@@ -16,6 +16,8 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 var defaultDatabase = firebase.database(); //Initialize firebase database
+var coinbase = require('./coinbase.js');
+firebase.initializeApp(config);
 
 /////*** Global server variables [START]
 let oneDay = 24*3600*1000; //Milliseconds a day
@@ -64,26 +66,19 @@ server.post('/api/messages', connector.listen());
 var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
     var msg = session.message.text;
-    var potentialQuery = msg.trim().toLowerCase();
-    if(potentialQuery == "!price=ETH"){
-
-    } else if(potentialQuery == "!price=BTC"){
-
-    } else if(potentialQuery == "!price=LTC"){
-
+    if(msg == "a"){
+        var card = coinbase.requestCoinbaseOAuthAccess(session);
+        var message = new builder.Message(session).addAttachment(card);
+        session.send(message);
+    } else if(msg == "b"){
+    	session.send(test2(msg));
     }
-   	//session.send(test(msg));
-   session.send("Hi");
-   session.send(pricetools.getPriceFunc("ETH", "GBP", session).toString());
 });
 
+function test(msg){
+	return "Brijendar";
+}
 
-/*
-function searchPrices(){
-  pricetools.getPriceFunc("ETH", "USD");
-  pricetools.getPriceFunc("LTC", "USD");
-  pricetools.getPriceFunc("BTC", "USD");
-} */
-
-
-
+function test2(msg) {
+	return "Garodia";
+}
