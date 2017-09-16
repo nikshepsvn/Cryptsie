@@ -1,4 +1,4 @@
-function requestCoinbaseOAuthAccess(session){
+module.exports requestCoinbaseOAuthAccess = function(session){
     var CLIENTID = `76048590e4cfcd34f3ebd4d3b01f8566447c8dc991f07a74c62e06124e011bed`;
     var SCOPE = `wallet:accounts:read&
                  wallet:addresses:read&
