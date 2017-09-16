@@ -27,6 +27,14 @@ var lastBTCPrice = 0;
 var lastLTCPrice = 0;
 ////*** Global server variables [END]
 
+//////-------------
+
+////**** Update Daily time settings [START]
+setInterval("updateCurrentTime()", oneDay); //Updating time
+setInterval("searchPrices()", oneDay)
+
+///**** Update Daily time settings [END]
+
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
@@ -64,12 +72,23 @@ var bot = new builder.UniversalBot(connector, function (session) {
     }
    	//session.send(test(msg));
    session.send("Hi");
-   session.send(pricetools.getPriceFunc("ETH", "GBP"));
+   session.send(pricetools.getPriceFunc("ETH", "GBP").toString());
 });
+
+
+//setInterval(func, milliseconds)
+
+
+function searchPrices(){
+  pricetools.getPriceFunc("ETH", "USD");
+  pricetools.getPriceFunc("LTC", "USD");
+  pricetools.getPriceFunc("BTC", "USD");
+}
 
 
 function updateCurrentTime(){
 	currentTime = Date.now();
+  updateNextTime();
 }
 
 function updateNextTime(){
