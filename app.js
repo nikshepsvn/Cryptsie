@@ -6,6 +6,7 @@ var restify = require('restify');
 var builder = require('botbuilder');
 var firebase = require("firebase");
 var pricetools = require('./helpers/getprices.js');
+var coinbase = require('./coinbase.js');
 
 //Setup Firebase
 var firebaseConfig = {
@@ -16,7 +17,7 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 var defaultDatabase = firebase.database(); //Initialize firebase database
-var coinbase = require('./coinbase.js');
+
 
 /////*** Global server variables [START]
 let oneDay = 24*3600*1000; //Milliseconds a day
@@ -34,11 +35,11 @@ var updatedToday = false;
 //////-------------
 
 ////**** Update Daily time settings [START]
-setInterval(function updateCurrentTime(){
+setInterval(function(){
              currentTime = Date.now();
              updateTime = currentTime + thirtyMin;
              //Everything should be updated.
-             pricetools.updateAppPriceFunc("eth", prices);
+             //pricetools.updateAppPriceFunc("eth", prices);
             //pricetools.updateAppPriceFunc("btc", prices);
             //pricetools.updateAppPriceFunc("ltc", prices);
 
@@ -85,11 +86,3 @@ var bot = new builder.UniversalBot(connector, function (session) {
       pricetools.getPriceFunc('LTC', 'USD', session);
     }
 });
-
-function test(msg){
-	return "Brijendar";
-}
-
-function test2(msg) {
-	return "Garodia";
-}
