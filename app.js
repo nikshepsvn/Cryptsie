@@ -54,7 +54,7 @@ server.post('/api/messages', connector.listen());
 var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
     var msg = session.message.text;
-    if(msg.trim().toLowerCase()=="!price=eth")
+    if(msg.trim().toLowerCase()=="!price=eth"){}
    	//session.send(test(msg));
    session.send(pricetools.getPriceFunc("ETH", "GBP"));
 });

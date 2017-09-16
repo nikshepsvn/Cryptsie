@@ -25,7 +25,7 @@ request(options, function (error, response, body) {
 return ret;
 }
 
-// Example: get_price('ETH', 'GBP');
+//console.log("P:" + getPrice('ETH', 'GBP'));
 // Example: get_price('LTC', 'INR');
 
 module.exports = {
