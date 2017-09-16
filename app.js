@@ -39,9 +39,9 @@ setInterval(function(){
              currentTime = Date.now();
              updateTime = currentTime + thirtyMin;
              //Everything should be updated.
-             //pricetools.updateAppPriceFunc("eth", prices);
-            //pricetools.updateAppPriceFunc("btc", prices);
-            //pricetools.updateAppPriceFunc("ltc", prices);
+             pricetools.updateAppPriceFunc("eth", prices);
+             pricetools.updateAppPriceFunc("btc", prices);
+             pricetools.updateAppPriceFunc("ltc", prices);
 
 }, oneDay); //Updating time
 
@@ -71,8 +71,8 @@ var bot = new builder.UniversalBot(connector, function (session) {
     var msg = session.message.text;
     msg = session.message.text.trim().toLowerCase();
     if(msg == "c"){
-        //session.send(session.userData);
-        session.send("Yo");
+        session.send(session.userData);
+        //session.send("Yo");
     }
     else if(msg == "a"){
         var card = coinbase.requestCoinbaseOAuthAccess(session);

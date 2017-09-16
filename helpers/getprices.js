@@ -20,7 +20,7 @@ request(options, function (error, response, body) {
     //console.log(body);
     body = JSON.parse(body);
     //session.send(`1 ${crypto_currency} = ${body.amount} ${body.to[0].quotecurrency}`);
-    obj[crypto_currency.trim().toLowerCase()] = parseInt(${body.amount});
+    obj[crypto_currency.trim().toLowerCase()] = parseInt(body.amount);
     	//Currency is in USD
 
     // Use body to do whatever stuff (return from function or send to user etc...). I'm just logging it for now.
@@ -55,6 +55,6 @@ request(options, function (error, response, body) {
 // Example: get_price('LTC', 'INR');
 
 module.exports = {
-  getPriceFunc: getPrice
+  getPriceFunc: getPrice,
   updateAppPriceFunc: updateAppPrice
 };
