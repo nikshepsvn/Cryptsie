@@ -2,6 +2,7 @@ var request = require("request");
 
 
 function getPrice(crypto_currency, user_currency) {
+var ret = -1;
 var options = {method: 'GET',
   url: `https://api.coinbase.com/v2/prices/${crypto_currency}-USD/buy`,
 };
@@ -18,8 +19,10 @@ request(options, function (error, response, body) {
     console.log(body);
     body = JSON.parse(body);
     // Use body to do whatever stuff (return from function or send to user etc...). I'm just logging it for now.
+    ret = body;
   });
 });
+return ret;
 }
 
 // Example: get_price('ETH', 'GBP');
