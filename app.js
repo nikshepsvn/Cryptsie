@@ -74,18 +74,16 @@ var bot = new builder.UniversalBot(connector, function (session) {
     }
    	//session.send(test(msg));
    session.send("Hi");
-   session.send(pricetools.getPriceFunc("ETH", "GBP").toString());
+   session.send(pricetools.getPriceFunc("ETH", "GBP", session).toString());
 });
 
 
-//setInterval(func, milliseconds)
-
-
+/*
 function searchPrices(){
   pricetools.getPriceFunc("ETH", "USD");
   pricetools.getPriceFunc("LTC", "USD");
   pricetools.getPriceFunc("BTC", "USD");
-}
+} */
 
 
 
