@@ -70,7 +70,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
         var message = new builder.Message(session).addAttachment(card);
         session.send(message);
     } else if(msg == "b"){
-    	session.send(test2(msg));
+    	pricetools.getPrices('ETH', 'GBP', session);
     }
 });
 
