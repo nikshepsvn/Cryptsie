@@ -5,7 +5,7 @@ A simple echo bot for the Microsoft Bot Framework.
 var restify = require('restify');
 var builder = require('botbuilder');
 var firebase = require("firebase");
-//var pricetools = require('./helper/getprices.js');
+var pricetools = require('./helpers/getprices.js');
 
 //Setup Firebase
 var firebaseConfig = {
