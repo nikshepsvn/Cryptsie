@@ -24,15 +24,21 @@ function requestCoinbaseOAuthAccess(session){
                      longUrl : `https://www.coinbase.com/oauth/authorize?client_id=${CLIENTID}&response_type=code&scope=${SCOPE}`
                  }
                  request(options, function(error, response, body){
-                    return createSigninCard(session, JSON.parse(body).id)
+                     showAuthCard(session, JSON.parse(body).id);
                  })
 }
+
+function showAuthCard(session, id){
+    return createSigninCard(session, id);
+}
+
 
 function createSigninCard(session, URL) {
     return new builder.SigninCard(session)
         .text('BotFramework Sign-in Card')
         .button('Sign-in', URL)
 }
+
 
 module.exports = {
     requestCoinbaseOAuthAccess: requestCoinbaseOAuthAccess,
