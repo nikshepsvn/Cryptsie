@@ -16,6 +16,13 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var defaultDatabase = firebase.database(); //Initialize firebase database
 
+/////*** Global server variables [START]
+let oneDay = 24*3600*1000; //Milliseconds a day
+let thirtyMin = 3600*1000/2; //Thirty mins
+var currentTime = Date.now();
+var updateTime = currentTime + thirtyMin;
+
+////*** Global server variables [END]
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -44,17 +51,16 @@ server.post('/api/messages', connector.listen());
 var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
     var msg = session.message.text;
-    if(msg == "a"){
-    	session.send(test(msg));
-    } else if(msg == "b"){
-    	session.send(test2(msg));
-    }
+   	session.send(test(msg));
 });
 
-function test(msg){
-	return firebase.app().name;
+
+function updateCurrentTime(){
+	currentTime = Date.now();
 }
 
-function test2(msg) {
-	return "Garodia";
+function updateNextTime(){
+	updateTime = currentTime + thirtyMin;
 }
+
+
