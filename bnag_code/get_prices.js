@@ -22,6 +22,7 @@ request(options, function (error, response, body) {
   });
 });
 }
+
 // Example:get_price('ETH', 'GBP');
 // Example: get_price('LTC', 'INR');
 
