@@ -3,7 +3,7 @@ var restify = require('restify');
 var builder = require('botbuilder');
 
 
-function updateAppPrice(crypto_currency){
+function updateAppPrice(crypto_currency, obj){
 	var options = {method: 'GET',
   url: `https://api.coinbase.com/v2/prices/${crypto_currency}-USD/buy`,
 };
@@ -20,7 +20,7 @@ request(options, function (error, response, body) {
     //console.log(body);
     body = JSON.parse(body);
     //session.send(`1 ${crypto_currency} = ${body.amount} ${body.to[0].quotecurrency}`);
-    crypto_currency[crypto_currency.trim().toLowerCase()] = parseInt(${body.amount});
+    obj[crypto_currency.trim().toLowerCase()] = parseInt(${body.amount});
     	//Currency is in USD
 
     // Use body to do whatever stuff (return from function or send to user etc...). I'm just logging it for now.
