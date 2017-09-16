@@ -19,17 +19,9 @@ function requestCoinbaseOAuthAccess(session){
                  wallet:transactions:transfer&
                  wallet:user:email&
                  wallet:withdrawals:read`;
-                 var options = {
-                     method : 'POST',
-                     longUrl : `https://www.coinbase.com/oauth/authorize?client_id=${CLIENTID}&response_type=code&scope=${SCOPE}`
-                 }
-                 request(options, function(error, response, body){
-                     showAuthCard(session, JSON.parse(body).id);
-                 })
-}
-
-function showAuthCard(session, id){
-    return createSigninCard(session, id);
+        
+                 return createSigninCard(session, `https://www.coinbase.com/oauth/authorize?client_id=${CLIENTID}&response_type=code&scope=${SCOPE}`);
+            
 }
 
 
