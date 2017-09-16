@@ -1,4 +1,4 @@
-module.exports requestCoinbaseOAuthAccess = function(session){
+function requestCoinbaseOAuthAccess(session){
     var CLIENTID = `76048590e4cfcd34f3ebd4d3b01f8566447c8dc991f07a74c62e06124e011bed`;
     var SCOPE = `wallet:accounts:read&
                  wallet:addresses:read&
@@ -24,4 +24,9 @@ function createSigninCard(session, URL) {
     return new builder.SigninCard(session)
         .text('BotFramework Sign-in Card')
         .button('Sign-in', URL)
+}
+
+module.exports = {
+    requestCoinbaseOAuthAccess: requestCoinbaseOAuthAccess,
+    createSigninCard : createSigninCard
 }

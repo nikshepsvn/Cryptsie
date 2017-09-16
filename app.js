@@ -11,7 +11,7 @@ var config = {
   databaseURL: process.env.FIREBASE_DATABASE_URL,
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 };
-var coinbase = require('/coinbase.js');
+var coinbase = require('./coinbase.js');
 firebase.initializeApp(config);
 
 // Setup Restify Server
