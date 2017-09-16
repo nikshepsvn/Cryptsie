@@ -14,7 +14,7 @@ var firebaseConfig = {
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 };
 firebase.initializeApp(firebaseConfig);
-var defaultDatabase = defaultApp.database(); //Initialize firebase database
+var defaultDatabase = firebase.database(); //Initialize firebase database
 
 
 // Setup Restify Server
