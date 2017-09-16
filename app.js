@@ -56,6 +56,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     var msg = session.message.text;
     if(msg.trim().toLowerCase()=="!price=eth"){}
    	//session.send(test(msg));
+   session.send("Hi");
    session.send(pricetools.getPriceFunc("ETH", "GBP"));
 });
 
