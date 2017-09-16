@@ -17,7 +17,6 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var defaultDatabase = firebase.database(); //Initialize firebase database
 var coinbase = require('./coinbase.js');
-firebase.initializeApp(config);
 
 /////*** Global server variables [START]
 let oneDay = 24*3600*1000; //Milliseconds a day
