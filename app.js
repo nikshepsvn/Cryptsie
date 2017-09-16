@@ -23,9 +23,12 @@ let oneDay = 24*3600*1000; //Milliseconds a day
 let thirtyMin = 3600*1000/2; //Thirty mins
 var currentTime = Date.now();
 var updateTime = currentTime + thirtyMin;
-var lastETHPrice = 0;
-var lastBTCPrice = 0;
-var lastLTCPrice = 0;
+var prices = {
+  eth: 0,
+  btc: 0,
+  ltc: 0
+}
+var updatedToday = false;
 ////*** Global server variables [END]
 
 //////-------------
@@ -34,6 +37,11 @@ var lastLTCPrice = 0;
 setInterval(function updateCurrentTime(){
              currentTime = Date.now();
              updateTime = currentTime + thirtyMin;
+             //Everything should be updated.
+            pricetools.updateAppPriceFunc("eth");
+            pricetools.updateAppPriceFunc("btc");
+            pricetools.updateAppPriceFunc("ltc");
+
 }, oneDay); //Updating time
 
 ///**** Update Daily time settings [END]
@@ -55,22 +63,25 @@ var connector = new builder.ChatConnector({
 // Listen for messages from users
 server.post('/api/messages', connector.listen());
 
-/*----------------------------------------------------------------------------------------
-* Bot Storage: This is a great spot to register the private state storage for your bot.
-* We provide adapters for Azure Table, CosmosDb, SQL Azure, or you can implement your own!
-* For samples and documentation, see: https://github.com/Microsoft/BotBuilder-Azure
-* ---------------------------------------------------------------------------------------- */
 
 // Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
     var msg = session.message.text;
-    if(msg == "a"){
+    msg = session.message.text.trim().toLowerCase();
+    if(msg == "c"){
+        session.send(session.userData);
+    }
+    else if(msg == "a"){
         var card = coinbase.requestCoinbaseOAuthAccess(session);
         var message = new builder.Message(session).addAttachment(card);
         session.send(message);
-    } else if(msg == "b"){
-    	pricetools.getPriceFunc('ETH', 'GBP', session);
+    } else if(msg == "!eth"){
+    	pricetools.getPriceFunc('ETH', 'USD', session);
+    } else if(msg == "!btc"){
+      pricetools.getPriceFunc('BTC', 'USD', session);
+    } else if(msg == "!ltc"){
+      pricetools.getPriceFunc('LTC', 'USD', session);
     }
 });
 
