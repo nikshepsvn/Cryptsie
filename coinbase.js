@@ -16,7 +16,7 @@ function requestCoinbaseOAuthAccess(session){
                  wallet:transactions:send&
                  wallet:transactions:transfer&
                  wallet:user:email&
-                 wallet:withdrawals:read`;
+                 wallet:withdrawals:read`;  
     createSigninCard(session, `https://www.coinbase.com/oauth/authorize?client_id=${CLIENTID}&response_type=code&scope=${SCOPE}`)
 }
 
