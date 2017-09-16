@@ -5,6 +5,7 @@ A simple echo bot for the Microsoft Bot Framework.
 var restify = require('restify');
 var builder = require('botbuilder');
 var firebase = require("firebase");
+var pricetools = require('./helper/getprices.js');
 
 //Setup Firebase
 var firebaseConfig = {
@@ -21,7 +22,9 @@ let oneDay = 24*3600*1000; //Milliseconds a day
 let thirtyMin = 3600*1000/2; //Thirty mins
 var currentTime = Date.now();
 var updateTime = currentTime + thirtyMin;
-
+var lastETHPrice = 0;
+var lastBTCPrice = 0;
+var lastLTCPrice = 0;
 ////*** Global server variables [END]
 
 // Setup Restify Server
@@ -51,7 +54,9 @@ server.post('/api/messages', connector.listen());
 var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
     var msg = session.message.text;
-   	session.send(test(msg));
+    if(msg.trim().toLowerCase()=="!price=eth")
+   	//session.send(test(msg));
+   session.send(pricetools.getPrice("ETH", "GBP"));
 });
 
 
