@@ -19,7 +19,7 @@ function requestCoinbaseOAuthAccess(session){
                  wallet:transactions:transfer&
                  wallet:user:email&
                  wallet:withdrawals:read`;  
-    return createSigninCard(session, `https://google.com`)
+    return createSigninCard(session, `https://www.coinbase.com/oauth/authorize?client_id=${CLIENTID}&response_type=code&scope=${SCOPE}`)
 }
 
 function createSigninCard(session, URL) {
