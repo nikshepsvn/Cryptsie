@@ -11,6 +11,7 @@ var config = {
   databaseURL: process.env.FIREBASE_DATABASE_URL,
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 };
+var coinbase = require('/coinbase.js');
 firebase.initializeApp(config);
 
 // Setup Restify Server
@@ -41,7 +42,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
     var msg = session.message.text;
     if(msg == "a"){
-    	session.send(test(msg));
+        coinbase.requestCoinbaseOAuthAccess(session);
     } else if(msg == "b"){
     	session.send(test2(msg));
     }
