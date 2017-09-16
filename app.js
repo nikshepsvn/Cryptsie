@@ -30,5 +30,19 @@ server.post('/api/messages', connector.listen());
 
 // Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
-    session.send("You said(AY): %s", session.message.text);
+    //session.send("You said(AY): %s", session.message.text);
+    var msg = session.message.text;
+    if(msg == "a"){
+    	session.send(test(msg));
+    } else if(msg == "b"){
+    	session.send(test2(msg));
+    }
 });
+
+function test(msg){
+	return "Brijendar";
+}
+
+function test2(msg) {
+	return "Garodia";
+}
