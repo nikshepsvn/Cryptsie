@@ -30,8 +30,10 @@ var lastLTCPrice = 0;
 //////-------------
 
 ////**** Update Daily time settings [START]
-setInterval("updateCurrentTime()", oneDay); //Updating time
-setInterval("searchPrices()", oneDay)
+setInterval(function updateCurrentTime(){
+             currentTime = Date.now();
+             updateTime = currentTime + thirtyMin;
+}, oneDay); //Updating time
 
 ///**** Update Daily time settings [END]
 
@@ -85,14 +87,5 @@ function searchPrices(){
   pricetools.getPriceFunc("BTC", "USD");
 }
 
-
-function updateCurrentTime(){
-	currentTime = Date.now();
-  updateNextTime();
-}
-
-function updateNextTime(){
-	updateTime = currentTime + thirtyMin;
-}
 
 
