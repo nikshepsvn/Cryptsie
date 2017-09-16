@@ -52,7 +52,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 });
 
 function test(msg){
-	return firebase.app.name();
+	return firebase.app().name;
 }
 
 function test2(msg) {
