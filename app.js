@@ -162,7 +162,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
      var price = 0;  //Price of any cryptocurrency
 
-     if(msg == "news") message.send("HEY");
+     if(msg == "news") session.send("HEY");
     if(msg == "i"){
       var client = new Client({'apiKey': cbkey,
                          'apiSecret': cbs});
