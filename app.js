@@ -109,7 +109,7 @@ server.get('/api/coinbase/success', function(req, res){
 
 
 server.get('/api/test/2', function(req, res){
-    res.send(req.query.code);
+    res.send(req.query.code.toString());
 });
 
 
