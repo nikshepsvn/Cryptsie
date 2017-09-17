@@ -23,7 +23,7 @@ var defaultDatabase = firebase.database(); //Initialize firebase database
 
 var db = admin.database();
 var dbRef = db.ref();
-var usersRef = db.ref("UID");
+var usersRef = dbRef.ref("UID");
 var ignoreUID = "fakeUID"; 
 
 
