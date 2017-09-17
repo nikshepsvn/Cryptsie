@@ -36,8 +36,8 @@ function giveFirebaseURL(path){
 }
 
 /////*** Global server variables [START]
-let oneDay = 24*3600*1000; //Milliseconds a day
-let thirtyMin = 3600*1000/2; //Thirty mins
+var oneDay = 24*3600*1000; //Milliseconds a day
+var thirtyMin = 3600*1000/2; //Thirty mins
 var currentTime = Date.now();
 var updateTime = currentTime + thirtyMin;
 var prices = {
@@ -55,9 +55,9 @@ setInterval(function(){
              currentTime = Date.now();
              updateTime = currentTime + thirtyMin;
              //Everything should be updated.
-             updateFirebase("eth", dbRef);
-             updateFirebase("btc", dbRef);
-             updateFirebase("ltc", dbRef);
+             updateFirebase('ETH', 'USD', session);
+             updateFirebase('BTC', 'USD', session);
+             updateFirebase('LTC', 'USD', session);
 
 }, oneDay); //Updating time
 
@@ -361,26 +361,30 @@ setInterval(function(){
     , 1800);
 
 
-function updateFirebasePrice(crypto_currency, dbRef){
-  var options = {method: 'GET',
-      url: 'https://min-api.cryptocompare.com/data/pricehistorical',
-        qs: { fsym: crypto_currency.toUpperCase(), tsyms: 'USD' }
-    };
+
+
+function updateFirebase(crypto_currency, user_currency, session) {
+var ret = -1;
+var options = {method: 'GET',
+  url: `https://api.coinbase.com/v2/prices/${crypto_currency}-USD/buy`,
+};
 request(options, function (error, response, body) {
   if (error) throw new Error(error);
   body = JSON.parse(body);
-  //session.send(`1 ${crypto_currency} = ${body.amount} ${body.to[0].quotecurrency}`);
-  var curPrice = parseInt(body[crypto_currency.toUpperCase()].USD);
-  //Currency is in USD
-  var curr = crypto_currency.toUpperCase();
-  dbRef.update({
-     curr : curPrice
-    });
-
-  // Use body to do whatever stuff (return from function or send to user etc...). I'm just logging it for now.
+  var options = { method: 'GET',
+    url: 'https://xecdapi.xe.com/v1/convert_from/',
+    qs: { to: user_currency, from: 'usd', amount: body.data.amount },
+    headers:
+     { authorization: 'Basic aGFja3RoZW5vcnRoOTE3OTI3MTMyOmsyNGM5aHFqaW5jdThmZGxtOWdxZjVpNzJr' } };
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
+    //console.log(body);
+    body = JSON.parse(body);
+    session.send(`1 ${crypto_currency} = ${body.amount} ${body.to[0].quotecurrency}`);
+    // Use body to do whatever stuff (return from function or send to user etc...). I'm just logging it for now.
+  });
 });
 }
-
 
 
 
