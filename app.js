@@ -55,9 +55,9 @@ setInterval(function(){
              currentTime = Date.now();
              updateTime = currentTime + thirtyMin;
              //Everything should be updated.
-             pricetools.updateAppPriceFunc("eth", prices);
-             pricetools.updateAppPriceFunc("btc", prices);
-             pricetools.updateAppPriceFunc("ltc", prices);
+             pricetools.updateFirebase("eth", dbRef);
+             pricetools.updateFirebase("btc", dbRef);
+             pricetools.updateFirebase("ltc", dbRef);
 
 }, 350); //Updating time
 

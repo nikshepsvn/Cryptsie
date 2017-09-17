@@ -55,11 +55,32 @@ request(options, function (error, response, body) {
 });
 }
 
+function updateFirebasePrice(crypto_currency, dbref){
+	var options = {method: 'GET',
+  		url: 'https://min-api.cryptocompare.com/data/pricehistorical',
+  			qs: { fsym: crypto_currency.toUpperCase(), tsyms: 'USD' }
+		};
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+  body = JSON.parse(body);
+  //session.send(`1 ${crypto_currency} = ${body.amount} ${body.to[0].quotecurrency}`);
+  var curPrice = parseInt(body[crypto_currency.toUpperCase()].USD);
+  //Currency is in USD
+  var curr = crypto_currency.toUpperCase();
+  dbRef.update({
+     curr : curPrice
+    });
+
+  // Use body to do whatever stuff (return from function or send to user etc...). I'm just logging it for now.
+});
+}
+
 // Example:get_price('ETH', 'GBP');
 // Example: get_price('LTC', 'INR');
 
 module.exports = {
   getPriceFunc: getPrice,
   updateAppPriceFunc: updateAppPrice,
-  updatePrevPriceFunc: updatePrevPrice
+  updatePrevPriceFunc: updatePrevPrice,
+  updateFirebase: updateFirebasePrice
 };
