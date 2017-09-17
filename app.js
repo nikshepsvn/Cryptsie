@@ -108,12 +108,14 @@ server.get('/api/code', function (req, res){
     }
 
     var options2 = {
-      url: urlVar
+      url: urlVar,
+      method: "POST",
+      json: true
     }
 
     //res.send(urlVar);
     
-    request.post(options2, function(error, response, body){
+    request(options2, function(error, response, body){
         if(error) res.send(error.toString() + "    " + response);
         if(body) res.send(body.toString());
         COINBASE_ACCESS_TOKEN = body.access_token;
