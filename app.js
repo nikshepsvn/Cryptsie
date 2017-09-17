@@ -106,6 +106,16 @@ var bot = new builder.UniversalBot(connector, function (session) {
     }
 });
 
+//TESTING
+
+server.get('/firebase', function (req, res, next) {
+     db.on("value", function(snapshot) {
+            res.json(JSON.parse(snapshot));
+        }, function (errorObject) {
+           console.log("The read failed: " + errorObject.code);
+        });
+});
+
 function queryFirebaseForID(){
 
 }
