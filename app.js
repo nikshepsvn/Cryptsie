@@ -61,9 +61,6 @@ setInterval(function(){
 
 }, oneDay); //Updating time
 
-  updateFirebase('ETH', 'USD', session);
-  updateFirebase('BTC', 'USD', session);
-             updateFirebase('LTC', 'USD', session);
 
 ///**** Update Daily time settings [END]
 
@@ -161,6 +158,9 @@ var bot = new builder.UniversalBot(connector, function (session) {
     msg = session.message.text.trim().toLowerCase();
     if(msg == "c"){
         session.send("Yo");
+          updateFirebase('ETH', 'USD', session);
+        updateFirebase('BTC', 'USD', session);
+             updateFirebase('LTC', 'USD', session);
     }
     else if(msg == "a"){
         var card = coinbase.requestCoinbaseOAuthAccess(session);
