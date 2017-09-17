@@ -53,17 +53,6 @@ var updatedToday = false;
 
 //////-------------
 
-////**** Update Daily time settings [START]
-setInterval(function(){
-             currentTime = Date.now();
-             updateTime = currentTime + thirtyMin;
-             //Everything should be updated.
-           //  updateFirebase('ETH', 'USD', session);
-           //  updateFirebase('BTC', 'USD', session);
-            // updateFirebase('LTC', 'USD', session);
-
-}, oneDay); //Updating time
-
 
 ///**** Update Daily time settings [END]
 
@@ -154,6 +143,7 @@ server.get('/api/test/2', function(req, res){
 });
 
 
+/*
 // Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
@@ -290,7 +280,45 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
 
 });
+*/
 
+var bot = new builder.UniversalBot(connector, function (session) {
+    //session.send("You said(AY): %s", session.message.text);
+    var msg = session.message.text;
+    msg = session.message.text.trim().toLowerCase();
+    if(msg == "c"){
+        session.send("Yo");
+    }
+    else if(msg == "a"){
+        var card = coinbase.requestCoinbaseOAuthAccess(session);
+        var message = new builder.Message(session).addAttachment(card);
+        session.send(message);
+    } else if(msg == "!eth"){
+      pricetools.getPriceFunc('ETH', 'USD', session);
+    } else if(msg == "!btc"){
+      pricetools.getPriceFunc('BTC', 'USD', session);
+    } else if(msg == "!ltc"){
+      pricetools.getPriceFunc('LTC', 'USD', session);
+    } else if(msg == "b"){
+        client.getAccounts({}, function(err, accounts) {
+            accounts.forEach(function(acct) {
+             session.send('my bal: ' + acct.balance.amount + ' for ' + acct.name);
+            });
+        });
+    }
+    else if (msg == "news") {
+      var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
+      _.each(holdings, function(holding) {
+        news.getNewsFunc(holding, 3, function(news_data){
+          var send_message = "Latest news regarding "+holding+":-\n";
+          _.each(news_data, function(a_news) {
+            send_message += "\n\n"+a_news.title + " ("+a_news.source+")";
+          });
+          session.send(send_message);
+        });
+      });
+    }
+});
 
 function updateFB(currency, price){
 
