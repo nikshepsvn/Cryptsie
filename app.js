@@ -73,7 +73,7 @@ server.post('/api/messages', connector.listen());
 
 server.get('/api/rest', function (req, res) {
   dbRef.once('value').then((snapshot)=>{
-    res.send(snapshot.val()['UID']);
+    res.send(snapshot.val().UID.toString());
   });
 });
 
