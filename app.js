@@ -168,41 +168,52 @@ server.get('/api/test3', function (req, res) {
 });
     
 function checkForSpike(){
-    var currentPrice = {
-        btc: 0,
-        eth: 0,
-        ltc: 0
-    };
-    var prevDayPrice = {
-        btc: 0,
-        eth: 0,
-        ltc: 0
-    };
-
-    pricetools.updateAppPriceFunc(btc, currentPrice);
-    pricetools.updateAppPriceFunc(eth, currentPrice);
-    pricetools.updateAppPriceFunc(ltc, currentPrice);
     
-    pricetools.updatePrevPriceFunc(btc, prevDayPrice);
-    pricetools.updatePrevPriceFunc(eth, prevDayPrice);
-    pricetools.updatePrevPriceFunc(ltc, prevDayPrice);
+        var currentPrice = {
+            btc: 0,
+            eth: 0,
+            ltc: 0
+        };
     
-    var BTCcurrentprice = allCurrentPrice.BTCPrice;
-    var ETHcurrentprice = allCurrentPrice.ETHPrice;
-    var LTCcurrentprice = allCurrentPrice.LTCPrice;
-    var BTCdaychange = BTCcurrentprice-BTCprevdayprice/BTCprevdayprice;
-    var ETHdaychange = ETHcurrentprice-ETHprevdayprice/ETHprevdayprice;
-    var LTCdaychange = LTCcurrentprice-LTCprevdayprice/LTCprevdayprice;
-    if(abs(BTCdaychange)>0.05){
-        session.send(`BTC PRICE SPIKE DETECTED, Change of ${BTCdaychange*100} in the past day`);
+        var prevDayPrice = {
+            btc: 0,
+            eth: 0,
+            ltc: 0
+        };
+    
+        pricetools.updateAppPriceFunc("btc", currentPrice);
+        pricetools.updateAppPriceFunc("eth", currentPrice);
+        pricetools.updateAppPriceFunc("ltc", currentPrice);
+        
+        pricetools.updatePrevPriceFunc("btc", prevDayPrice);
+        pricetools.updatePrevPriceFunc("eth", prevDayPrice);
+        pricetools.updatePrevPriceFunc("ltc", prevDayPrice);
+        
+        setTimeout(function(){    
+            var BTCcurrentprice = currentPrice.btc;
+            var ETHcurrentprice = currentPrice.eth;
+            var LTCcurrentprice = currentPrice.ltc;
+            
+            var BTCprevdayprice = prevDayPrice.btc;
+            var ETHprevdayprice = prevDayPrice.eth;
+            var LTCprevdayprice = prevDayPrice.ltc;
+        
+            var BTCdaychange = (BTCcurrentprice-BTCprevdayprice)/BTCprevdayprice;
+            var ETHdaychange = (ETHcurrentprice-ETHprevdayprice)/ETHprevdayprice;
+            var LTCdaychange = (LTCcurrentprice-LTCprevdayprice)/LTCprevdayprice;
+            
+            if(Math.abs(BTCdaychange)>0.05){
+               session.send(`BTC PRICE SPIKE DETECTED, Change of ${BTCdaychange*100} in the past day`);
+            }
+            if(Math.abs(ETHdaychange)>0.05){
+               session.send(`ETH PRICE SPIKE DETECTED, Change of ${ETHdaychange*100} in the past day`);
+            }
+            if(Math.abs(LTCdaychange)>0.05){
+                session.send(`LTC PRICE SPIKE DETECTED, Change of ${LTCdaychange*100} in the past day`);
+            }
+        }, 5000);
     }
-    if(abs(ETHdaychange)>0.05){
-        session.send(`ETH PRICE SPIKE DETECTED, Change of ${ETHdaychange*100} in the past day`);
-    }
-    if(abs(LTCdaychange)>0.05){
-        session.send(`LTC PRICE SPIKE DETECTED, Change of ${LTCdaychange*100} in the past day`);
-    }
-}
+    
 
 var networthcounter = 0;
 function writeNetWorthToDB(){
