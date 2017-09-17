@@ -14,6 +14,7 @@
     "body-parser": "^1.18.1",
     "botbuilder": "^3.8.4",
     "coinbase": "^2.0.6",
+    "express": "^4.15.4",
     "firebase": "^4.3.1",
     "firebase-admin": "^5.2.1",
     "restify": "^5.0.0"

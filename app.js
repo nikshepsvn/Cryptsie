@@ -11,6 +11,9 @@ var pricetools = require('./helpers/getprices.js');
 var coinbase = require('./coinbase.js');
 var request = require('request');
 var bodyParser = require('body-parser');
+var express = require('express');
+
+server.use(restify.queryParser());
 
 //Setup Firebase
 var firebaseConfig = {
