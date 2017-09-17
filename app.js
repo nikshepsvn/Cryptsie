@@ -5,6 +5,7 @@ A simple echo bot for the Microsoft Bot Framework.
 var restify = require('restify');
 var builder = require('botbuilder');
 var firebase = require("firebase");
+var admin = require("firebase-admin");
 var pricetools = require('./helpers/getprices.js');
 var coinbase = require('./coinbase.js');
 
@@ -17,6 +18,14 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 var defaultDatabase = firebase.database(); //Initialize firebase database
+
+//Setup ADMIN firebase DB
+
+var db = admin.database();
+var dbRef = db.ref();
+var usersRef = db.ref("UID");
+var ignoreUID = "fakeUID"; 
+
 
 
 /////*** Global server variables [START]
@@ -70,6 +79,16 @@ var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
     var msg = session.message.text;
     msg = session.message.text.trim().toLowerCase();
+    if("specialID" in session.userData){
+
+    } else {
+        db.on("value", function(snapshot) {
+            console.log(snapshot.val());
+        }, function (errorObject) {
+           console.log("The read failed: " + errorObject.code);
+        });
+        session.userData["specialID"] = //
+    }
     if(msg == "c"){
         session.send(session.userData.name);
         //session.send("Yo");
@@ -86,3 +105,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
       pricetools.getPriceFunc('LTC', 'USD', session);
     }
 });
+
+function queryFirebaseForID(){
+
+}
