@@ -160,6 +160,8 @@ var bot = new builder.UniversalBot(connector, function (session) {
     var msg = session.message.text;
     msg = session.message.text.trim().toLowerCase();
 
+     var price = 0;  //Price of any cryptocurrency
+
     if(msg == "i"){
       var client = new Client({'apiKey': cbkey,
                          'apiSecret': cbs});
@@ -169,11 +171,20 @@ var bot = new builder.UniversalBot(connector, function (session) {
           message.send(account.toString());
       });
     }
-    var price = 0; 
-
-    if(msg == "c"){
+    else if(msg == "c"){
         session.send("Yo");
         
+    } else if (msg == "!news") {
+      var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
+      _.each(holdings, function(holding) {
+        news.getNewsFunc(holding, 3, function(news_data){
+          var send_message = "Latest news regarding "+holding+":-\n";
+          _.each(news_data, function(a_news) {
+            send_message += "\n\n"+a_news.title + " ("+a_news.source+")";
+          });
+          session.send(send_message);
+        });
+      });
     }
     else if(msg == "!login"){
         var card = coinbase.requestCoinbaseOAuthAccess(session);
@@ -257,21 +268,10 @@ var bot = new builder.UniversalBot(connector, function (session) {
        });
       
     }
-    else if (msg == "!news") {
-      var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
-      _.each(holdings, function(holding) {
-        news.getNewsFunc(holding, 3, function(news_data){
-          var send_message = "Latest news regarding "+holding+":-\n";
-          _.each(news_data, function(a_news) {
-            send_message += "\n\n"+a_news.title + " ("+a_news.source+")";
-          });
-          session.send(send_message);
-        });
-      });
-    }
 
-        if(msg.indexOf("=") != -1){
+    //Conds
 
+    if(msg.indexOf("=") != -1){
         dbRef.on("value", function(snapshot){
         var eth = "ETH: " + snapshot.val()["ETH"];
         var ltc = "LTC: " + snapshot.val()["LTC"];
@@ -286,7 +286,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
       
     } 
 
-    
+
 });
 
 
