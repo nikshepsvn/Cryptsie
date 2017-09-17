@@ -27,9 +27,9 @@ var dbRef = defaultDatabase.ref();
 //var firebaseURL = 'https://bitbot-a45b9.firebaseio.com/.json?print=pretty';
 
 
-global.COINBASE_ACCESS_TOKEN = '';
-global.COINBASE_REFRESH_TOKEN = '';
-global.COINBASE_EXPIRY_TIME = 0;
+var COINBASE_ACCESS_TOKEN = '';
+var COINBASE_REFRESH_TOKEN = '';
+var COINBASE_EXPIRY_TIME = 0;
 
 function giveFirebaseURL(path){
   return 'https://bitbot-a45b9.firebaseio.com/' + path + '.json';
@@ -128,9 +128,9 @@ server.get('/api/code', function (req, res){
 
     request(options2, function(error, response, body){
         if(error) res.json(error);
-        global.COINBASE_ACCESS_TOKEN = body.access_token;
-        global.COINBASE_EXPIRY_TIME = body.expires_in;
-        global.COINBASE_REFRESH_TOKEN = body.refresh_token;
+        COINBASE_ACCESS_TOKEN = body.access_token;
+        COINBASE_EXPIRY_TIME = body.expires_in;
+        COINBASE_REFRESH_TOKEN = body.refresh_token;
         
 
 
@@ -305,7 +305,7 @@ function writeNetWorthToDB(){
 }
 
 
-setInterval(writeNetWorthToDB(), 3600);
-setInterval(checkForSpike(), 1800);
+//setInterval(writeNetWorthToDB(), 3600);
+//setInterval(checkForSpike(), 1800);
 
 
