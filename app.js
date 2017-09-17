@@ -109,7 +109,7 @@ server.get('/api/code', function (req, res){
       json: true
     }
 
-  
+
     //res.send(urlVar);
 
     request(options2, function(error, response, body){
@@ -117,7 +117,7 @@ server.get('/api/code', function (req, res){
         COINBASE_ACCESS_TOKEN = body.access_token;
         COINBASE_EXPIRY_TIME = body.expires_in;
         COINBASE_REFRESH_TOKEN = body.refresh_token;
-        
+
 
 
         var obj = {
@@ -143,6 +143,23 @@ server.get('/api/test/2', function(req, res){
 });
 
 
+// Takes in an object in format {curr: USD, amt: 342} and home_curr
+function currency_convert(curr_obj, home_curr) {
+  var options = { method: 'GET',
+    url: 'https://xecdapi.xe.com/v1/convert_to/',
+    qs: { to: curr_obj.curr, from: home_curr, amount: curr_obj.amt },
+    headers:
+     { authorization: 'Basic aGFja3RoZW5vcnRoOTE3OTI3MTMyOmsyNGM5aHFqaW5jdThmZGxtOWdxZjVpNzJr' } };
+     request(options, function (error, response, body) {
+       if (error) throw new Error(error);
+       body = JSON.parse(body);
+       console.log(body);
+       curr_obj.curr = body.from[0].quotecurrency;
+       curr_obj.amt = body.from[0].mid;
+     });
+   }
+
+
 // Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
@@ -153,7 +170,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
     if(msg == "c"){
         session.send("Yo");
-        
+
     } else if (msg.indexOf("news") != -1) {
       session.send(msg);
       var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
@@ -174,7 +191,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     } else if(msg.indexOf("buybtc=") != -1){
       //Wants to buy btc
        price = 1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
-       
+
        dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["BTC"]);
           dbRef.update({
@@ -202,7 +219,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
           })
        });
 
-    
+
     } else if(msg.indexOf("sellbtc=") != -1){
       //Wants to buy eth
 
@@ -224,7 +241,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
             "ETH": cur + price
           })
        });
-    } 
+    }
     else if(msg.indexOf("sellltc=") != -1){
       //Wants to buy eth
        price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
@@ -234,7 +251,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
             "LTC": cur + price
           })
        });
-    } 
+    }
     else if(msg == "!eth"){
     	pricetools.getPriceFunc('ETH', 'USD', session);
     } else if(msg == "!btc"){
@@ -247,7 +264,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
          }, function(error){
           res.send("Error : " + error.code);
        });
-      
+
     }
 
     //Conds
@@ -264,8 +281,8 @@ var bot = new builder.UniversalBot(connector, function (session) {
           res.send("Error : " + error.code);
        });
 
-      
-    } 
+
+    }
 
 
 });
@@ -334,40 +351,40 @@ function listAccounts(access, refresh){
 
 
 function checkForSpike(){
-    
+
         var currentPrice = {
             btc: 0,
             eth: 0,
             ltc: 0
         };
-    
+
         var prevDayPrice = {
             btc: 0,
             eth: 0,
             ltc: 0
         };
-    
+
         pricetools.updateAppPriceFunc("btc", currentPrice);
         pricetools.updateAppPriceFunc("eth", currentPrice);
         pricetools.updateAppPriceFunc("ltc", currentPrice);
-        
+
         pricetools.updatePrevPriceFunc("btc", prevDayPrice);
         pricetools.updatePrevPriceFunc("eth", prevDayPrice);
         pricetools.updatePrevPriceFunc("ltc", prevDayPrice);
-        
-        setTimeout(function(){    
+
+        setTimeout(function(){
             var BTCcurrentprice = currentPrice.btc;
             var ETHcurrentprice = currentPrice.eth;
             var LTCcurrentprice = currentPrice.ltc;
-            
+
             var BTCprevdayprice = prevDayPrice.btc;
             var ETHprevdayprice = prevDayPrice.eth;
             var LTCprevdayprice = prevDayPrice.ltc;
-        
+
             var BTCdaychange = (BTCcurrentprice-BTCprevdayprice)/BTCprevdayprice;
             var ETHdaychange = (ETHcurrentprice-ETHprevdayprice)/ETHprevdayprice;
             var LTCdaychange = (LTCcurrentprice-LTCprevdayprice)/LTCprevdayprice;
-            
+
             if(Math.abs(BTCdaychange)>0.05){
                session.send(`BTC PRICE SPIKE DETECTED, Change of ${BTCdaychange*100} in the past day`);
             }
@@ -379,7 +396,7 @@ function checkForSpike(){
             }
         }, 5000);
     }
-    
+
 
 var networthcounter = 0;
 
@@ -398,40 +415,40 @@ setInterval(function(){
  */
 
 setInterval(function(){
-    
+
         var currentPrice = {
             btc: 0,
             eth: 0,
             ltc: 0
         };
-    
+
         var prevDayPrice = {
             btc: 0,
             eth: 0,
             ltc: 0
         };
-    
+
         pricetools.updateAppPriceFunc("btc", currentPrice);
         pricetools.updateAppPriceFunc("eth", currentPrice);
         pricetools.updateAppPriceFunc("ltc", currentPrice);
-        
+
         pricetools.updatePrevPriceFunc("btc", prevDayPrice);
         pricetools.updatePrevPriceFunc("eth", prevDayPrice);
         pricetools.updatePrevPriceFunc("ltc", prevDayPrice);
-        
-        setTimeout(function(){    
+
+        setTimeout(function(){
             var BTCcurrentprice = currentPrice.btc;
             var ETHcurrentprice = currentPrice.eth;
             var LTCcurrentprice = currentPrice.ltc;
-            
+
             var BTCprevdayprice = prevDayPrice.btc;
             var ETHprevdayprice = prevDayPrice.eth;
             var LTCprevdayprice = prevDayPrice.ltc;
-        
+
             var BTCdaychange = (BTCcurrentprice-BTCprevdayprice)/BTCprevdayprice;
             var ETHdaychange = (ETHcurrentprice-ETHprevdayprice)/ETHprevdayprice;
             var LTCdaychange = (LTCcurrentprice-LTCprevdayprice)/LTCprevdayprice;
-            
+
             if(Math.abs(BTCdaychange)>0.05){
                session.send(`BTC PRICE SPIKE DETECTED, Change of ${BTCdaychange*100} in the past day`);
             }
@@ -471,11 +488,3 @@ request(options, function (error, response, body) {
   });
 });
 }
-
-
-
-
-
-
-
-
