@@ -7,7 +7,7 @@ var builder = require('botbuilder');
 var firebase = require("firebase");
 var pricetools = require('./helpers/getprices.js');
 var coinbase = require('./coinbase.js');
-var restify = require('restify');
+var request = require('request');
 
 //Setup Firebase
 var firebaseConfig = {
