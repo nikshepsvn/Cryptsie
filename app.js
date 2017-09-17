@@ -86,6 +86,10 @@ server.get('/api/test', function (req, res) {
   });
 });
 
+server.get('/global', function (req, res) {
+    res.json(prices);
+})
+
 
 // Listen to returning of Code from OAuth call
 server.get('/api/code', function (req, res){
@@ -104,7 +108,8 @@ server.get('/api/code', function (req, res){
     }
 
     var options2 = {
-      url: urlVar
+      url: urlVar,
+      oauth:oauth
     }
 
     //res.send(urlVar);
