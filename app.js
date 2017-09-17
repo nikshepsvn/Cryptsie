@@ -306,7 +306,8 @@ setInterval(function(){
                 });
               ++networthcounter;
 }, 3600);
-setInterval("checkForSpike()", 1800);
+
+//setInterval("checkForSpike()", 1800);
 
 
 
