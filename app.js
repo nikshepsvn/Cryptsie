@@ -173,9 +173,9 @@ var bot = new builder.UniversalBot(connector, function (session) {
             _.each(_.first(body.value, 5), function(article) {
               send_message += "\n\n" + article.name+" ("+article.provider[0].name+")";
           });
-            setTimeout(2000, function(){
+            setTimeout(function(){
               session.send(send_message);
-            });
+            }, 2000);
           
       });
     });
