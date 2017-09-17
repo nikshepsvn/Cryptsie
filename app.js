@@ -73,7 +73,7 @@ server.post('/api/messages', connector.listen());
 server.get('/api/rest', function (req, res) {
   request(giveFirebaseURL(""), function (error, response, body) {
     if(body){
-      res.json(body.UID);
+      res.send(body.UID);
     }
 });
 });
