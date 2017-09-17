@@ -71,7 +71,7 @@ var connector = new builder.ChatConnector({
 // Listen for messages from users
 server.post('/api/messages', connector.listen());
 
-server.get('/api/rest', function (req, res) {
+server.get('/api/test', function (req, res) {
   dbRef.once('value').then((snapshot)=>{
     res.send(snapshot.val().UID.toString());
   });
@@ -83,7 +83,15 @@ var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
     var msg = session.message.text;
     msg = session.message.text.trim().toLowerCase();
-    if(msg == "c"){
+    var sess = session.userData;
+    if("uid" in sess){
+        //Done
+    } else {
+      dbRef.once('value').then((snapshot)=>{
+        session.userData.uid = parseInt(snapshot.val().UID.toString());
+      });
+    } 
+    else if(msg == "c"){
         session.send("Yo");
     }
     else if(msg == "a"){
