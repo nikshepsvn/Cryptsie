@@ -2,7 +2,7 @@
 A simple echo bot for the Microsoft Bot Framework.
 -----------------------------------------------------------------------------*/
 var Client = require('coinbase').Client;
-var client;
+var client = null;
 
 var restify = require('restify');
 var builder = require('botbuilder');
@@ -175,6 +175,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     } else if(msg == "!ltc"){
       pricetools.getPriceFunc('LTC', 'USD', session);
     } else if(msg == "b"){
+        if(client == null) session.send("NULL");
         client.getAccounts({}, function(err, accounts) {
           session.send(typeof accounts);
             accounts.forEach(function(acct) {
