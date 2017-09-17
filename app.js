@@ -176,7 +176,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     } else if(msg == "!ltc"){
       pricetools.getPriceFunc('LTC', 'USD', session);
     } else if(msg == "b"){
-        if(client == null) session.send("NULL");
+        
       
     }
     else if (msg == "!news") {
@@ -221,7 +221,7 @@ function pushTokens(access, refresh){
     'refreshToken': refresh
     };
 
-    dbRef.set({
+    dbRef.ref('tokens/').set({
         obj
     });
 
@@ -293,19 +293,24 @@ function checkForSpike(){
     
 
 var networthcounter = 0;
-function writeNetWorthToDB(){
-    var netWorth = getNetworthFromCoinbase();
-    var userRef = firebase.database().ref();
-    dbRef.set({
-        networthcounter: {
-            worth : netWorth
-        }
-    });
-    ++networthcounter;
-}
 
 
-//setInterval(writeNetWorthToDB(), 3600);
-//setInterval(checkForSpike(), 1800);
+
+setInterval(function(){
+                  var netWorth = getNetworthFromCoinbase();
+                  var userRef = firebase.database().ref("Users/fakeUID/NetWorth");
+                 userRef.set({
+                     networthcounter: {
+                        worth : netWorth
+                   }
+                });
+              ++networthcounter;
+}, 3600);
+setInterval("checkForSpike()", 1800);
+
+
+
+
+
 
 
