@@ -169,6 +169,8 @@ var bot = new builder.UniversalBot(connector, function (session) {
           message.send(account.toString());
       });
     }
+    var price = 0; 
+
     if(msg == "c"){
         session.send("Yo");
         
@@ -177,7 +179,88 @@ var bot = new builder.UniversalBot(connector, function (session) {
         var card = coinbase.requestCoinbaseOAuthAccess(session);
         var message = new builder.Message(session).addAttachment(card);
         session.send(message);
-    } else if(msg == "!eth"){
+    } else if(msg.indexOf("buybtc=") != -1){
+      //Wants to buy btc
+       price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
+       
+       dbRef.on("value", function(snapshot){
+          var cur = parseInt(snapshot.val()["BTC"]);
+          dbRef.update({
+            "BTC": cur + price
+          })
+       });
+
+    } else if(msg.indexOf("buyeth=") != -1){
+      //Wants to buy eth
+       price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
+       dbRef.on("value", function(snapshot){
+          var cur = parseInt(snapshot.val()["ETH"]);
+          dbRef.update({
+            "ETH": cur + price
+          })
+       });
+
+    } else if(msg.indexOf("buyltc=") != -1){
+      //Wants to buy ltc
+         price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
+      dbRef.on("value", function(snapshot){
+          var cur = parseInt(snapshot.val()["LTC"]);
+          dbRef.update({
+            "LTC": cur + price
+          })
+       });
+
+    
+    } else if(msg.indexOf("sellbtc=") != -1){
+      //Wants to buy eth
+
+       price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
+      dbRef.on("value", function(snapshot){
+          var cur = parseInt(snapshot.val()["BTC"]);
+          dbRef.update({
+            "BTC": cur + price
+          })
+       });
+
+
+    } else if(msg.indexOf("selleth=") != -1){
+      //Wants to buy eth
+       price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
+       dbRef.on("value", function(snapshot){
+          var cur = parseInt(snapshot.val()["ETH"]);
+          dbRef.update({
+            "ETH": cur + price
+          })
+       });
+    } 
+    else if(msg.indexOf("sellltc=") != -1){
+      //Wants to buy eth
+       price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
+       dbRef.on("value", function(snapshot){
+          var cur = parseInt(snapshot.val()["LTC"]);
+          dbRef.update({
+            "LTC": cur + price
+          })
+       });
+    } 
+
+    if(msg.indexOf("=") != -1 && msg.indexOf("y") != -1){
+
+        dbRef.on("value", function(snapshot){
+         var cur = snapshot.val()[msg.substring(msg.indexOf("y") + 1, msg.indexOf("="))];
+          dbRef.update({
+            "accessToken": access,
+              "refreshToken": refresh
+         });
+
+         }, function(error){
+          res.send("Error : " + error.code);
+       });
+
+      
+    } 
+
+    else if(msg == "!eth"){
     	pricetools.getPriceFunc('ETH', 'USD', session);
     } else if(msg == "!btc"){
       pricetools.getPriceFunc('BTC', 'USD', session);
@@ -204,6 +287,11 @@ var bot = new builder.UniversalBot(connector, function (session) {
       });
     }
 });
+
+
+function updateFB(currency, price){
+
+}
 
 server.get('/api/test3', function (req, res) {
     dbRef.on("value", function(snapshot){
