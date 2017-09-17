@@ -213,3 +213,8 @@ server.get('/api/tokens', function(req, res){
   }
   res.json(obj);
 });
+
+server.get('/check/client', function(req, res) {
+  if(client == null) res.send("NULL PTR");
+  else res.send("NOT NULL PTR");
+});
