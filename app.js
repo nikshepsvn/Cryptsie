@@ -12,7 +12,7 @@ var request = require('request');
 var bodyParser = require('body-parser');
 var express = require('express');
 var _ = require("underscore");
-var news = require('./helpers/getnews.js');
+//var news = require('./helpers/getnews.js');
 //Setup Firebase
 var firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -156,16 +156,29 @@ var bot = new builder.UniversalBot(connector, function (session) {
         
     } else if (msg.indexOf("news") != -1) {
       session.send(msg);
+
       var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
       _.each(holdings, function(holding) {
-        news.getNewsFunc(holding, 3, function(news_data){
           var send_message = "Latest news regarding "+holding+":-\n";
-          _.each(news_data, function(a_news) {
-            send_message += "\n\n"+a_news.title + " ("+a_news.source+")";
+
+          var options = { method: 'GET',
+            url: 'https://api.cognitive.microsoft.com/bing/v5.0/news/search',
+            qs: { q: holding },
+            headers: { 'ocp-apim-subscription-key': '86984344e78141338f75c3af1d558485' }};
+
+            request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+            //console.log(body);
+            body = JSON.parse(body);
+            _.each(_.first(body.value, 5), function(article) {
+              send_message += "\n\n" + article.name+" ("+article.provider[0].name+")";
           });
-          session.send(send_message);
-        });
+            setTimeout(2000, function(){
+              session.send(send_message);
+            });
+          
       });
+    });
     }
     else if(msg == "!login"){
         var card = coinbase.requestCoinbaseOAuthAccess(session);
@@ -293,8 +306,7 @@ server.get('/api/tokens', function(req, res){
 });
 
 server.get('/check/client', function(req, res) {
-  if(client == null) res.send("NULL PTR");
-  else res.send("NOT NULL PTR");
+  res.send("NOT NULL PTR");
 });
 
 server.get('/check/prices', function(req, res){
@@ -397,7 +409,7 @@ setInterval(function(){
 }, 3600);
  */
 
-setInterval(function(){
+function f(){
     
         var currentPrice = {
             btc: 0,
@@ -442,9 +454,32 @@ setInterval(function(){
                 session.send(`LTC PRICE SPIKE DETECTED, Change of ${LTCdaychange*100} in the past day`);
             }
         }, 5000);
-    }
-    , 1800);
+  }
 
+
+function updateNetWorth(){
+  dbRef.once('value').then((snapshot)=>{
+    var btc = parseInt(snapshot.val()["BTC"]);
+    var eth = parseInt(snapshot.val()["ETH"]);
+    var ltc = parseInt(snapshot.val()["LTC"]);
+    var sum = btc + eth + ltc;
+    dbRef.ref("Net/").then((snapshot) => {
+      var nextDay = "Day" + (snapshot.numChildren() - 1).toString();
+      var obj = {};
+      obj[nextDay] = sum;
+        dbRef.ref("Net/").update(obj);
+     });
+  });
+}
+
+function returnNet(){
+  dbRef.once('value').then((snapshot)=>{
+      var btc = parseInt(snapshot.val()["BTC"]);
+      var eth = parseInt(snapshot.val()["ETH"]);
+      var ltc = parseInt(snapshot.val()["LTC"]);
+      var sum = btc + eth + ltc;
+  });
+}
 
 
 
