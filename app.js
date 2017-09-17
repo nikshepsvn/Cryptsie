@@ -59,7 +59,7 @@ setInterval(function(){
              pricetools.updateAppPriceFunc("btc", prices);
              pricetools.updateAppPriceFunc("ltc", prices);
 
-}, oneDay); //Updating time
+}, 350); //Updating time
 
 ///**** Update Daily time settings [END]
 
