@@ -266,9 +266,10 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
     else if(msg.indexOf("!all") != -1){
         dbRef.on("value", function(snapshot){
-        var eth = "ETH: " + snapshot.val()["ETH"];
-        var ltc = "LTC: " + snapshot.val()["LTC"];
-        var btc = "BTC: " + snapshot.val()["BTC"];
+        var locale = snapshot.val()["Locale"].toString();
+        var eth = "ETH: " + snapshot.val()["ETH"] + " " + locale;
+        var ltc = "LTC: " + snapshot.val()["LTC"] + " " + locale;
+        var btc = "BTC: " + snapshot.val()["BTC"] + " " + locale;
         session.send(eth.toString());
         session.send(btc.toString());
         session.send(ltc.toString());
@@ -284,7 +285,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
         session.send("!eth, !btc, !ltd -- current conversation rate in your currency");
         session.send("buy[eth/ltc/btc]=[amount] -- Buy amount of currency");
         session.send("sell[eth/ltc/btc]=[amount] -- Sell amount of currency");
-
+        session.send("!news -- Top news around the 3 big cryptocurrencies");
     }
 
 
