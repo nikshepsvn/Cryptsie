@@ -129,7 +129,6 @@ server.get('/api/code', function (req, res){
 
     request(options2, function(error, response, body){
         if(error) res.json(error);
-        if(body) res.json(body);
         COINBASE_ACCESS_TOKEN = body.access_token;
         COINBASE_EXPIRY_TIME = body.expires_in;
         COINBASE_REFRESH_TOKEN = body.refresh_token;
@@ -194,4 +193,13 @@ server.get('/api/test3', function (req, res) {
     }, function(error){
         res.send("Error : " + error.code);
     })
+});
+
+server.get('/api/tokens', function(req, res){
+  var obj = {
+     access: COINBASE_ACCESS_TOKEN,
+     refrsh: COINBASE_REFRESH_TOKEN,
+     expiry: COINBASE_EXPIRY_TIME
+  }
+  res.json(obj);
 });
