@@ -254,11 +254,29 @@ var bot = new builder.UniversalBot(connector, function (session) {
        });
     } 
     else if(msg == "!eth"){
-    	pricetools.getPriceFunc('ETH', 'USD', session);
+      dbRef.on("value", function(snapshot){
+        var locale = snapshot.val()["Locale"].toString().toUpperCase();
+        pricetools.getPriceFunc('ETH', locale, session);
+         }, function(error){
+          res.send("Error : " + error.code);
+       });
+    	
     } else if(msg == "!btc"){
-      pricetools.getPriceFunc('BTC', 'USD', session);
+      dbRef.on("value", function(snapshot){
+        var locale = snapshot.val()["Locale"].toString().toUpperCase();
+        pricetools.getPriceFunc('BTC', locale, session);
+         }, function(error){
+          res.send("Error : " + error.code);
+       });
+      
     } else if(msg == "!ltc"){
-      pricetools.getPriceFunc('LTC', 'USD', session);
+      bRef.on("value", function(snapshot){
+        var locale = snapshot.val()["Locale"].toString().toUpperCase();
+        pricetools.getPriceFunc('LTC', locale, session);
+         }, function(error){
+          res.send("Error : " + error.code);
+       });
+      
     } else if(msg == "b"){
          dbRef.on("value", function(snapshot){
         res.send(snapshot.val().Currencies);
