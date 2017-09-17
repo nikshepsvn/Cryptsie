@@ -151,16 +151,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
      var price = 0;  //Price of any cryptocurrency
 
-    if(msg == "i"){
-      var client = new Client({'apiKey': cbkey,
-                         'apiSecret': cbs});
-
-      client.createAccount({name: 'New Wallet'}, function(err, account) {
-        if(err) message.send(err.toString());
-          message.send(account.toString());
-      });
-    }
-    else if(msg == "c"){
+    if(msg == "c"){
         session.send("Yo");
         
     } else if (msg.indexOf("news") != -1) {
