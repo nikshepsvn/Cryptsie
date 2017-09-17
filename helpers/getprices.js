@@ -42,14 +42,14 @@ request(options, function (error, response, body) {
   body = JSON.parse(body);
   var options = { method: 'GET',
     url: 'https://xecdapi.xe.com/v1/convert_from/',
-    qs: { to: 'usd', from: user_currency, amount: body.data.amount },
+    qs: { to: user_currency, from: 'usd', amount: body.data.amount },
     headers:
      { authorization: 'Basic aGFja3RoZW5vcnRoOTE3OTI3MTMyOmsyNGM5aHFqaW5jdThmZGxtOWdxZjVpNzJr' } };
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
     //console.log(body);
     body = JSON.parse(body);
-    session.send(`1 ${crypto_currency} = ${body.amount} ${body.to[0].quotecurrency}`);
+    session.send(`1 ${crypto_currency} = ${body.from[0].mid} ${body.to[0].quotecurrency}`);
     // Use body to do whatever stuff (return from function or send to user etc...). I'm just logging it for now.
   });
 });
