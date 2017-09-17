@@ -129,12 +129,11 @@ server.get('/api/code', function (req, res){
 
     request(options2, function(error, response, body){
         if(error) res.json(error);
-        if(body) res.json(body);
         COINBASE_ACCESS_TOKEN = body.access_token;
         COINBASE_EXPIRY_TIME = body.expires_in;
         COINBASE_REFRESH_TOKEN = body.refresh_token;
         client = new Client({'accessToken': COINBASE_ACCESS_TOKEN, 'refreshToken': COINBASE_REFRESH_TOKEN});
-
+        res.send("Object created");
     });
 });
 
