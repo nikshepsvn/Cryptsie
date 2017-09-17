@@ -176,6 +176,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
       pricetools.getPriceFunc('LTC', 'USD', session);
     } else if(msg == "b"){
         client.getAccounts({}, function(err, accounts) {
+          session.send(typeof accounts);
             accounts.forEach(function(acct) {
              session.send('my bal: ' + acct.balance.amount + ' for ' + acct.name);
             });
