@@ -28,9 +28,9 @@ var dbRef = defaultDatabase.ref();
 //var firebaseURL = 'https://bitbot-a45b9.firebaseio.com/.json?print=pretty';
 
 
-var COINBASE_ACCESS_TOKEN = '';
-var COINBASE_REFRESH_TOKEN = '';
-var COINBASE_EXPIRY_TIME = 0;
+global.COINBASE_ACCESS_TOKEN = '';
+global.COINBASE_REFRESH_TOKEN = '';
+global.COINBASE_EXPIRY_TIME = 0;
 
 function giveFirebaseURL(path){
   return 'https://bitbot-a45b9.firebaseio.com/' + path + '.json';
@@ -129,9 +129,9 @@ server.get('/api/code', function (req, res){
 
     request(options2, function(error, response, body){
         if(error) res.json(error);
-        COINBASE_ACCESS_TOKEN = body.access_token;
-        COINBASE_EXPIRY_TIME = body.expires_in;
-        COINBASE_REFRESH_TOKEN = body.refresh_token;
+        global.COINBASE_ACCESS_TOKEN = body.access_token;
+        global.COINBASE_EXPIRY_TIME = body.expires_in;
+        global.COINBASE_REFRESH_TOKEN = body.refresh_token;
         client = new Client({'accessToken': COINBASE_ACCESS_TOKEN, 'refreshToken': COINBASE_REFRESH_TOKEN});
 
 
@@ -181,7 +181,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
             });
         });
     }
-    else if (msg == "news") {
+    else if (msg == "!news") {
       var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
       _.each(holdings, function(holding) {
         news.getNewsFunc(holding, 3, function(news_data){
