@@ -54,6 +54,23 @@ var updatedToday = false;
 //////-------------
 
 
+function currency_convert(curr_obj, home_curr, callback) {
+  var options = { method: 'GET',
+    url: 'https://xecdapi.xe.com/v1/convert_to/',
+    qs: { to: curr_obj.curr, from: home_curr, amount: curr_obj.amt },
+    headers:
+     { authorization: 'Basic aGFja3RoZW5vcnRoOTE3OTI3MTMyOmsyNGM5aHFqaW5jdThmZGxtOWdxZjVpNzJr' } };
+     request(options, function (error, response, body) {
+       if (error) throw new Error(error);
+       body = JSON.parse(body);
+       console.log(body);
+       curr_obj.curr = body.from[0].quotecurrency;
+       curr_obj.amt = body.from[0].mid;
+     });
+   }
+
+
+
 ///**** Update Daily time settings [END]
 
 // Setup Restify Server
@@ -291,12 +308,16 @@ var bot = new builder.UniversalBot(connector, function (session) {
     else if(msg.indexOf("!all") != -1){
         dbRef.on("value", function(snapshot){
         var locale = snapshot.val()["Locale"].toString();
-        var eth = "ETH: " + snapshot.val()["ETH"] + " " + locale;
-        var ltc = "LTC: " + snapshot.val()["LTC"] + " " + locale;
-        var btc = "BTC: " + snapshot.val()["BTC"] + " " + locale;
+        /*var eth = "ETH: " + snapshot.val()["ETH"] + " ETH = " + locale;
+        var ltc = "LTC: " + snapshot.val()["LTC"] + " LTC = " + locale;
+        var btc = "BTC: " + snapshot.val()["BTC"] + " BTC = " + locale;
         session.send(eth.toString());
         session.send(btc.toString());
-        session.send(ltc.toString());
+        session.send(ltc.toString()); */
+        pricetools.gprice("ETH", snapshot.val()["ETH"], locale, session);
+        pricetools.gprice("BTC", snapshot.val()["BTC"], locale, session);
+        pricetools.gprice("LTC", snapshot.val()["LTC"], locale, session);
+
          }, function(error){
           res.send("Error : " + error.code);
        });
