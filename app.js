@@ -175,6 +175,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
         session.send("Yo");
         
     } else if (msg == "!news") {
+      session.send(msg);
       var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
       _.each(holdings, function(holding) {
         news.getNewsFunc(holding, 3, function(news_data){
