@@ -151,7 +151,6 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
      var price = 0;  //Price of any cryptocurrency
 
-
     if(msg == "i"){
       var client = new Client({'apiKey': cbkey,
                          'apiSecret': cbs});
@@ -162,18 +161,8 @@ var bot = new builder.UniversalBot(connector, function (session) {
       });
     }
     else if(msg == "c"){
-        //session.send("Yo");
-        var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
-      _.each(holdings, function(holding) {
-        news.getNewsFunc(holding, 3, function(news_data){
-          var send_message = "Latest news regarding "+holding+":-\n";
-          _.each(news_data, function(a_news) {
-            send_message += "\n\n"+a_news.title + " ("+a_news.source+")";
-          });
-          session.send(send_message);
-        });
-      });
-
+        session.send("Yo");
+        
     } else if (msg.indexOf("news") != -1) {
       session.send(msg);
       var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
