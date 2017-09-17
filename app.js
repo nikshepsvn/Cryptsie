@@ -64,6 +64,10 @@ var connector = new builder.ChatConnector({
 // Listen for messages from users
 server.post('/api/messages', connector.listen());
 
+server.get('/api/rest', function (req, res) {
+  res.send("hey)");
+});
+
 
 // Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
