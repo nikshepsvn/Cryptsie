@@ -154,8 +154,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     if(msg == "c"){
         session.send("Yo");
         
-    } else if (msg.indexOf("news") != -1) {
-      session.send(msg);
+    } else if (msg.indexOf("!news") != -1) {
 
       var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
       _.each(holdings, function(holding) {
@@ -265,19 +264,19 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
     //Conds
 
-    if(msg.indexOf("=") != -1){
+    else if(msg.indexOf("!all") != -1){
         dbRef.on("value", function(snapshot){
         var eth = "ETH: " + snapshot.val()["ETH"];
         var ltc = "LTC: " + snapshot.val()["LTC"];
         var btc = "BTC: " + snapshot.val()["BTC"];
         session.send(eth.toString());
-         session.send(btc.toString());
-          session.send(ltc.toString());
+        session.send(btc.toString());
+        session.send(ltc.toString());
          }, function(error){
           res.send("Error : " + error.code);
        });
-
-      
+    } else if(msg.indexOf("!net") != -1){
+        returnNet(session);
     } 
 
 
@@ -472,12 +471,13 @@ function updateNetWorth(){
   });
 }
 
-function returnNet(){
+function returnNet(session){
   dbRef.once('value').then((snapshot)=>{
       var btc = parseInt(snapshot.val()["BTC"]);
       var eth = parseInt(snapshot.val()["ETH"]);
       var ltc = parseInt(snapshot.val()["LTC"]);
       var sum = btc + eth + ltc;
+      session.send(sum.toString());
   });
 }
 
