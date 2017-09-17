@@ -91,7 +91,7 @@ server.get('/api/code', function (req, res){
         code : req.query.code,
         client_id : "76048590e4cfcd34f3ebd4d3b01f8566447c8dc991f07a74c62e06124e011bed",
         client_secret : "dc9024c8e3e5b672f1e3852e4b6d33b16095003b75db0eeab84fcc66879b3e30",
-        redirect_url : "https://cryptsie.azurewebsites.net/api/coinbase/success/"
+        redirect_uri : "https://cryptsie.azurewebsites.net/api/coinbase/success/"
     }
     request(options, function(error, response, body){
         COINBASE_ACCESS_TOKEN = body.access_token;
