@@ -55,9 +55,9 @@ setInterval(function(){
              currentTime = Date.now();
              updateTime = currentTime + thirtyMin;
              //Everything should be updated.
-             pricetools.updateFirebase("eth", dbRef);
-             pricetools.updateFirebase("btc", dbRef);
-             pricetools.updateFirebase("ltc", dbRef);
+             updateFirebase("eth", dbRef);
+             updateFirebase("btc", dbRef);
+             updateFirebase("ltc", dbRef);
 
 }, oneDay); //Updating time
 
