@@ -305,7 +305,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
     //Conds
 
-    else if(msg == "!all"){
+    else if(msg.indexOf("!all") != -1){
         dbRef.on("value", function(snapshot){
         var locale = snapshot.val()["Locale"].toString();
         /*var eth = "ETH: " + snapshot.val()["ETH"] + " ETH = " + locale;
@@ -316,7 +316,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
         session.send(ltc.toString()); */
         pricetools.gprice("ETH", snapshot.val()["ETH"], locale, session);
         pricetools.gprice("BTC", snapshot.val()["BTC"], locale, session);
-        pricetools.gprice("LTC", snapshot.val()["LTC"], locale, session);
+        pricetools.gprice("LTC", snapshot.val()["ETH"], locale, session);
 
          }, function(error){
           res.send("Error : " + error.code);
