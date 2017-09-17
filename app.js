@@ -39,7 +39,7 @@ var connector = new builder.ChatConnector({
 server.post('/api/messages', connector.listen());
 
 // Listen to returning of Code from OAuth call
-server.post('/api/code', codeToToken);
+server.get('/api/code', codeToToken);
 
 // Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
