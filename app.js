@@ -93,7 +93,7 @@ server.get('/api/code', function (req, res){
   var urlVar = "https://api.coinbase.com/oauth/token?code=" + req.query.code + "&grant_type=authorization_code" +
         "&client_id=76048590e4cfcd34f3ebd4d3b01f8566447c8dc991f07a74c62e06124e011bed" +
         "&client_secret=dc9024c8e3e5b672f1e3852e4b6d33b16095003b75db0eeab84fcc66879b3e30" + 
-        "&redirect_uri=https://cryptsie.azurewebsites.net/api/coinbase/success/" 
+        "&redirect_uri=https%3A%2F%2Fcryptsie.azurewebsites.net%2Fapi%2Fcoinbase%2Fsuccess"  
     var options = {
         url : "https://api.coinbase.com/oauth/token&code=" + req.query.code + "&",
         grant_type : 'authorization_code',

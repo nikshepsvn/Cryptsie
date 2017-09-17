@@ -20,7 +20,7 @@ function requestCoinbaseOAuthAccess(session){
                  wallet:user:email&
                  wallet:withdrawals:read`;
         
-                 return createSigninCard(session, `https://www.coinbase.com/oauth/authorize?client_id=${CLIENTID}&response_type=code`);
+                 return createSigninCard(session, `https://www.coinbase.com/oauth/authorize?client_id=${CLIENTID}&response_type=code&redirect_uri=https%3A%2F%2Fcryptsie.azurewebsites.net%2Fapi%2Fcode`);
             
 }
 
