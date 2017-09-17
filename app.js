@@ -87,7 +87,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
         }, function (errorObject) {
            console.log("The read failed: " + errorObject.code);
         });
-        session.userData["specialID"] = //
+        //session.userData["specialID"] = //
     }
     if(msg == "c"){
         session.send(session.userData.name);
