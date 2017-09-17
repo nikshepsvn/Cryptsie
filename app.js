@@ -108,6 +108,11 @@ server.get('/api/coinbase/success', function(req, res){
 });
 
 
+server.get('/api/test/2', function(req, res){
+    res.send(req.query.code);
+});
+
+
 // Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
