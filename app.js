@@ -244,9 +244,13 @@ var bot = new builder.UniversalBot(connector, function (session) {
        price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
       dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["BTC"]);
-          dbRef.update({
-            "BTC": cur + price
-          })
+          if(cur + price < 0){
+              session.send("Sell amount exceeds owned amount, cannot sell!");
+          } else{
+              dbRef.update({
+              "BTC": cur + price
+            });
+          }
        });
 
 
@@ -255,9 +259,15 @@ var bot = new builder.UniversalBot(connector, function (session) {
        price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
        dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["ETH"]);
-          dbRef.update({
+          if(cur + price < 0){
+              //Cannot sell
+              session.send("Sell amount exceeds owned amount, cannot sell!");
+          } else {
+             dbRef.update({
             "ETH": cur + price
-          })
+            });
+          }
+         
        });
     } 
     else if(msg.indexOf("sellltc=") != -1){
@@ -265,9 +275,15 @@ var bot = new builder.UniversalBot(connector, function (session) {
        price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
        dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["LTC"]);
-          dbRef.update({
+          if(cur + price < 0){
+              //Cannot sell
+              session.send("Sell amount exceeds owned amount, cannot sell!");
+          } else{
+            dbRef.update({
             "LTC": cur + price
           })
+          }
+          
        });
     } 
     else if(msg == "!eth"){
