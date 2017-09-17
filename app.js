@@ -13,8 +13,6 @@ var request = require('request');
 var bodyParser = require('body-parser');
 var express = require('express');
 
-server.use(restify.queryParser());
-
 //Setup Firebase
 var firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -68,6 +66,8 @@ var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
    console.log('%s listening to %s', server.name, server.url);
 });
+
+server.use(restify.plugins.queryParser());
 
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
