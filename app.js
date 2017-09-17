@@ -178,7 +178,6 @@ var bot = new builder.UniversalBot(connector, function (session) {
       });
     }
 });
-});
 
 server.get('/api/test3', function (req, res) {
     dbRef.on("value", function(snapshot){
