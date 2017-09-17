@@ -210,7 +210,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
       //Wants to buy btc
        price = 1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
        
-       dbRef.once("value", function(snapshot){
+       dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["BTC"]);
           dbRef.update({
             "BTC": cur + price
@@ -220,7 +220,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     } else if(msg.indexOf("buyeth=") != -1){
       //Wants to buy eth
        price = 1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
-       dbRef.once("value", function(snapshot){
+       dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["ETH"]);
           dbRef.update({
             "ETH": cur + price
@@ -230,7 +230,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     } else if(msg.indexOf("buyltc=") != -1){
       //Wants to buy ltc
          price = 1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
-      dbRef.once("value", function(snapshot){
+      dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["LTC"]);
           dbRef.update({
             "LTC": cur + price
@@ -242,52 +242,36 @@ var bot = new builder.UniversalBot(connector, function (session) {
       //Wants to buy eth
 
        price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
-      dbRef.once("value", function(snapshot){
+      dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["BTC"]);
-          if(cur + price < 0){
-              session.send("Sell amount exceeds owned amount, cannot sell!");
-          } else{
-              dbRef.update({
-              "BTC": cur + price
-            });
-          }
+          dbRef.update({
+            "BTC": cur + price
+          })
        });
 
 
     } else if(msg.indexOf("selleth=") != -1){
       //Wants to buy eth
        price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
-       dbRef.once("value", function(snapshot){
+       dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["ETH"]);
-          if(cur + price < 0){
-              //Cannot sell
-              session.send("Sell amount exceeds owned amount, cannot sell!");
-          } else {
-             dbRef.update({
+          dbRef.update({
             "ETH": cur + price
-            });
-          }
-         
+          })
        });
     } 
     else if(msg.indexOf("sellltc=") != -1){
       //Wants to buy eth
        price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
-       dbRef.once("value", function(snapshot){
+       dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["LTC"]);
-          if(cur + price < 0){
-              //Cannot sell
-              session.send("Sell amount exceeds owned amount, cannot sell!");
-          } else{
-            dbRef.update({
+          dbRef.update({
             "LTC": cur + price
           })
-          }
-          
        });
     } 
     else if(msg == "!eth"){
-      dbRef.once("value", function(snapshot){
+      dbRef.on("value", function(snapshot){
         var locale = snapshot.val()["Locale"].toString().toUpperCase();
         pricetools.getPriceFunc('ETH', locale, session);
          }, function(error){
@@ -295,7 +279,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
        });
     	
     } else if(msg == "!btc"){
-      dbRef.once("value", function(snapshot){
+      dbRef.on("value", function(snapshot){
         var locale = snapshot.val()["Locale"].toString().toUpperCase();
         pricetools.getPriceFunc('BTC', locale, session);
          }, function(error){
@@ -303,7 +287,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
        });
       
     } else if(msg == "!ltc"){
-      bRef.once("value", function(snapshot){
+      bRef.on("value", function(snapshot){
         var locale = snapshot.val()["Locale"].toString().toUpperCase();
         pricetools.getPriceFunc('LTC', locale, session);
          }, function(error){
@@ -311,7 +295,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
        });
       
     } else if(msg == "b"){
-         dbRef.once("value", function(snapshot){
+         dbRef.on("value", function(snapshot){
         res.send(snapshot.val().Currencies);
          }, function(error){
           res.send("Error : " + error.code);
@@ -322,7 +306,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     //Conds
 
     else if(msg == "!all"){
-        dbRef.once("value", function(snapshot){
+        dbRef.on("value", function(snapshot){
         var locale = snapshot.val()["Locale"].toString();
         /*var eth = "ETH: " + snapshot.val()["ETH"] + " ETH = " + locale;
         var ltc = "LTC: " + snapshot.val()["LTC"] + " LTC = " + locale;
