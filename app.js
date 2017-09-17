@@ -1,6 +1,8 @@
 /*-----------------------------------------------------------------------------
 A simple echo bot for the Microsoft Bot Framework.
 -----------------------------------------------------------------------------*/
+var Client = require('coinbase').Client;
+var client;
 
 var restify = require('restify');
 var builder = require('botbuilder');
@@ -21,6 +23,10 @@ firebase.initializeApp(firebaseConfig);
 var defaultDatabase = firebase.database(); //Initialize firebase database
 var dbRef = defaultDatabase.ref();
 //var firebaseURL = 'https://bitbot-a45b9.firebaseio.com/.json?print=pretty';
+
+var COINBASE_ACCESS_TOKEN = '';
+var COINBASE_REFRESH_TOKEN = '';
+var COINBASE_EXPIRY_TIME = 0;
 
 function giveFirebaseURL(path){
   return 'https://bitbot-a45b9.firebaseio.com/' + path + '.json';
@@ -76,6 +82,13 @@ server.get('/api/test', function (req, res) {
     res.send(snapshot.val().UID.toString());
   });
 });
+// Listen to returning of Code from OAuth call
+server.get('/api/code', codeToToken);
+
+
+server.get('/api/coinbase/success', function(req, res){
+    res.send("SUCCESS");
+});
 
 
 // Create your bot with a function to receive messages from the user
@@ -96,5 +109,32 @@ var bot = new builder.UniversalBot(connector, function (session) {
       pricetools.getPriceFunc('BTC', 'USD', session);
     } else if(msg == "!ltc"){
       pricetools.getPriceFunc('LTC', 'USD', session);
+    } else if(msg == "b"){
+        client.getAccounts({}, function(err, accounts) {
+            accounts.forEach(function(acct) {
+             session.send('my bal: ' + acct.balance.amount + ' for ' + acct.name);
+            });
+          });   
     }
 });
+
+function codeToToken (req, res){
+    var options = {
+        METHOD : 'POST',
+        url : "https://api.coinbase.com/oauth/token",
+        grant_type : 'authorization_code',
+        code : req.query.code,
+        client_id : "76048590e4cfcd34f3ebd4d3b01f8566447c8dc991f07a74c62e06124e011bed",
+        client_secret : "dc9024c8e3e5b672f1e3852e4b6d33b16095003b75db0eeab84fcc66879b3e30",
+        redirect_url : "https://cryptsie.azurewebsites.net/api/coinbase/success/"
+    }
+    request(options, function(error, response, body){
+        COINBASE_ACCESS_TOKEN = body.access_token;
+        COINBASE_EXPIRY_TIME = body.expires_in;
+        COINBASE_REFRESH_TOKEN = body.refresh_token;
+        client = new Client({'accessToken': COINBASE_ACCESS_TOKEN, 'refreshToken': COINBASE_REFRESH_TOKEN});
+        res.send(response.toString());
+    });
+};
+
+
