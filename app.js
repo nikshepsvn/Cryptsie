@@ -183,7 +183,10 @@ function checkForSpike(){
     pricetools.updateAppPriceFunc(eth, currentPrice);
     pricetools.updateAppPriceFunc(ltc, currentPrice);
     
-    var allPrevDayPrice = pricetools.updateAppPriceFunc(prevDayPrice);
+    pricetools.updatePrevPriceFunc(btc, prevDayPrice);
+    pricetools.updatePrevPriceFunc(eth, prevDayPrice);
+    pricetools.updatePrevPriceFunc(ltc, prevDayPrice);
+    
     var BTCcurrentprice = allCurrentPrice.BTCPrice;
     var ETHcurrentprice = allCurrentPrice.ETHPrice;
     var LTCcurrentprice = allCurrentPrice.LTCPrice;
