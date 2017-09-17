@@ -108,14 +108,13 @@ server.get('/api/code', function (req, res){
     }
 
     var options2 = {
-      url: urlVar,
-      oauth:oauth
+      url: urlVar
     }
 
     //res.send(urlVar);
     
     request.post(options2, function(error, response, body){
-        if(error) res.send(error.toString());
+        if(error) res.send(error.toString() + "    " + response);
         if(body) res.send(body.toString());
         COINBASE_ACCESS_TOKEN = body.access_token;
         COINBASE_EXPIRY_TIME = body.expires_in;
