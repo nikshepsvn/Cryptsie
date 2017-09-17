@@ -214,7 +214,7 @@ function pushTokens(access, refresh){
     'refreshToken': refresh
     };
 
-    dbRef.ref('obj/').update(obj);
+    dbRef.ref('obj/').set(obj);
 
 }
 
