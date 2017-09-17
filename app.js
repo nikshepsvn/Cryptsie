@@ -159,8 +159,6 @@ var bot = new builder.UniversalBot(connector, function (session) {
 });
 
 
-
-
 server.get('/api/test3', function (req, res) {
     dbRef.on("value", function(snapshot){
         res.send(snapshot.val().Users.fakeUID.Currencies);
@@ -169,3 +167,52 @@ server.get('/api/test3', function (req, res) {
     })
 });
     
+function checkForSpike(){
+    var currentPrice = {
+        btc: 0,
+        eth: 0,
+        ltc: 0
+    };
+    var prevDayPrice = {
+        btc: 0,
+        eth: 0,
+        ltc: 0
+    };
+
+    pricetools.updateAppPriceFunc(btc, currentPrice);
+    pricetools.updateAppPriceFunc(eth, currentPrice);
+    pricetools.updateAppPriceFunc(ltc, currentPrice);
+    
+    var allPrevDayPrice = pricetools.updateAppPriceFunc(prevDayPrice);
+    var BTCcurrentprice = allCurrentPrice.BTCPrice;
+    var ETHcurrentprice = allCurrentPrice.ETHPrice;
+    var LTCcurrentprice = allCurrentPrice.LTCPrice;
+    var BTCdaychange = BTCcurrentprice-BTCprevdayprice/BTCprevdayprice;
+    var ETHdaychange = ETHcurrentprice-ETHprevdayprice/ETHprevdayprice;
+    var LTCdaychange = LTCcurrentprice-LTCprevdayprice/LTCprevdayprice;
+    if(abs(BTCdaychange)>0.05){
+        session.send(`BTC PRICE SPIKE DETECTED, Change of ${BTCdaychange*100} in the past day`);
+    }
+    if(abs(ETHdaychange)>0.05){
+        session.send(`ETH PRICE SPIKE DETECTED, Change of ${ETHdaychange*100} in the past day`);
+    }
+    if(abs(LTCdaychange)>0.05){
+        session.send(`LTC PRICE SPIKE DETECTED, Change of ${LTCdaychange*100} in the past day`);
+    }
+}
+
+var networthcounter = 0;
+function writeNetWorthToDB(){
+    var netWorth = getNetworthFromCoinbase();
+    var userRef = firebase.database().ref("Users/fakeUID/NetWorth");
+    dbRef.set({
+        networthcounter: {
+            worth : netWorth
+        }
+    });
+    ++networthcounter;
+}
+
+
+setInterval(writeNetWorthToDB(), 3600);
+setInterval(checkForSpike(), 1800);
