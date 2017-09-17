@@ -386,7 +386,7 @@ request(options, function (error, response, body) {
     session.send(`1 ${crypto_currency} = ${body.amount} ${body.to[0].quotecurrency}`);
     // Use body to do whatever stuff (return from function or send to user etc...). I'm just logging it for now.
     dbRef.update({
-      crypto_currency: body.amount
+      `crypto_currency`: `body.amount`
     });
 
   });
