@@ -2,10 +2,13 @@
 A simple echo bot for the Microsoft Bot Framework.
 -----------------------------------------------------------------------------*/
 var Client = require('coinbase').Client;
-var client;
 var restify = require('restify');
 var builder = require('botbuilder');
 var firebase = require("firebase");
+var _ = require("underscore");
+var coinbase = require('./coinbase.js');
+var news = require('./helpers/getnews.js');
+var client;
 
 var config = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -14,7 +17,6 @@ var config = {
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 };
 
-var coinbase = require('./coinbase.js');
 firebase.initializeApp(config);
 
 var COINBASE_ACCESS_TOKEN = '';
@@ -54,7 +56,19 @@ var bot = new builder.UniversalBot(connector, function (session) {
             accounts.forEach(function(acct) {
              session.send('my bal: ' + acct.balance.amount + ' for ' + acct.name);
             });
-          });   
+          });
+    }
+    else if (msg == "news") {
+      var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
+      _.each(holdings, function(holding) {
+        news.getNewsFunc(holding, 3, function(news_data){
+          var send_message = "Latest news regarding "+holding+":-\n";
+          _.each(news_data, function(a_news) {
+            send_message += "\n"+a_news.title + " ("+a_news.source+")";
+          });
+          session.send(send_message);
+        });
+      });
     }
 });
 
@@ -74,5 +88,3 @@ function codeToToken (req, res, next){
         client = new Client({'accessToken': COINBASE_ACCESS_TOKEN, 'refreshToken': COINBASE_REFRESH_TOKEN});
     });
 };
-
-
