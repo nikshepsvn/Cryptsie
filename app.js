@@ -138,9 +138,9 @@ server.get('/api/code', function (req, res){
           access: COINBASE_ACCESS_TOKEN,
           refresh: COINBASE_REFRESH_TOKEN,
           expiry: COINBASE_EXPIRY_TIME
-          }
+        }
           pushTokens(obj.access, obj.refresh);
-          listAccounts(obj.access, obj.refresh);
+          //listAccounts(obj.access, obj.refresh);
           res.json(obj);
 
     });
