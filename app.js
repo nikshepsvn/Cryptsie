@@ -1,18 +1,25 @@
 /*-----------------------------------------------------------------------------
 A simple echo bot for the Microsoft Bot Framework.
 -----------------------------------------------------------------------------*/
-
+var Client = require('coinbase').Client;
+var client;
 var restify = require('restify');
 var builder = require('botbuilder');
 var firebase = require("firebase");
+
 var config = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   databaseURL: process.env.FIREBASE_DATABASE_URL,
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 };
+
 var coinbase = require('./coinbase.js');
 firebase.initializeApp(config);
+
+var COINBASE_ACCESS_TOKEN = '';
+var COINBASE_REFRESH_TOKEN = '';
+var COINBASE_EXPIRY_TIME = 0;
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -31,11 +38,8 @@ var connector = new builder.ChatConnector({
 // Listen for messages from users
 server.post('/api/messages', connector.listen());
 
-/*----------------------------------------------------------------------------------------
-* Bot Storage: This is a great spot to register the private state storage for your bot.
-* We provide adapters for Azure Table, CosmosDb, SQL Azure, or you can implement your own!
-* For samples and documentation, see: https://github.com/Microsoft/BotBuilder-Azure
-* ---------------------------------------------------------------------------------------- */
+// Listen to returning of Code from OAuth call
+server.post('/api/code', codeToToken);
 
 // Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
@@ -46,14 +50,29 @@ var bot = new builder.UniversalBot(connector, function (session) {
         var message = new builder.Message(session).addAttachment(card);
         session.send(message);
     } else if(msg == "b"){
-    	session.send(test2(msg));
+        client.getAccounts({}, function(err, accounts) {
+            accounts.forEach(function(acct) {
+             session.send('my bal: ' + acct.balance.amount + ' for ' + acct.name);
+            });
+          });   
     }
 });
 
-function test(msg){
-	return "Brijendar";
-}
+function codeToToken (req, res, next){
+    var options = {
+        METHOD : 'POST',
+        grant_type : 'authorization_code',
+        code : req.query.code,
+        client_id : process.env.COINBASE_CLIENT_ID,
+        client_secret : process.env.COINBASE_CLIENT_SECRET,
+        redirect_url : "https://www.cryptsie.com/"
+    }
+    request(options, "https://api.coinbase.com/oauth/token", function(error, response, body){
+        COINBASE_ACCESS_TOKEN = body.access_token;
+        COINBASE_EXPIRY_TIME = body.expires_in;
+        COINBASE_REFRESH_TOKEN = body.refresh_token;
+        client = new Client({'accessToken': COINBASE_ACCESS_TOKEN, 'refreshToken': COINBASE_REFRESH_TOKEN});
+    });
+};
 
-function test2(msg) {
-	return "Garodia";
-}
+

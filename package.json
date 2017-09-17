@@ -12,6 +12,7 @@
   "dependencies": {
     "azure-storage": "^2.4.0",
     "botbuilder": "^3.8.4",
+    "coinbase": "^2.0.6",
     "firebase": "^4.3.1",
     "restify": "^5.0.0"
   },
