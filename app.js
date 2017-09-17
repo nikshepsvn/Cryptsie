@@ -244,15 +244,15 @@ var bot = new builder.UniversalBot(connector, function (session) {
        });
     } 
 
-    if(msg.indexOf("=") != -1 && msg.indexOf("y") != -1){
+    if(msg.indexOf("=") != -1){
 
         dbRef.on("value", function(snapshot){
-         var cur = snapshot.val()[msg.substring(msg.indexOf("y") + 1, msg.indexOf("="))];
-          dbRef.update({
-            "accessToken": access,
-              "refreshToken": refresh
-         });
-
+        var eth = "ETH: " + snapshot.val()["ETH"];
+        var ltc = "LTC: " + snapshot.val()["LTC"];
+        var btc = "BTC: " + snapshot.val()["BTC"];
+        session.send(eth);
+         session.send(btc);
+          session.send(ltc);
          }, function(error){
           res.send("Error : " + error.code);
        });
