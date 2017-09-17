@@ -116,8 +116,8 @@ server.get('/api/code', function (req, res){
     //res.send(urlVar);
     
     request(options2, function(error, response, body){
-        if(error) res.json(error.toString());
-        if(body) res.send(body.toString());
+        if(error) res.json(error);
+        if(body) res.json(body);
         COINBASE_ACCESS_TOKEN = body.access_token;
         COINBASE_EXPIRY_TIME = body.expires_in;
         COINBASE_REFRESH_TOKEN = body.refresh_token;
