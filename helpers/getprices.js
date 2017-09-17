@@ -66,7 +66,7 @@ request(options, function (error, response, body) {
 });
 }
 
-function updateFirebasePrice(crypto_currency, dbref){
+function updateFirebasePrice(crypto_currency, drref){
 	var options = {method: 'GET',
   		url: 'https://min-api.cryptocompare.com/data/pricehistorical',
   			qs: { fsym: crypto_currency.toUpperCase(), tsyms: 'USD' }
