@@ -133,7 +133,15 @@ server.get('/api/code', function (req, res){
         COINBASE_EXPIRY_TIME = body.expires_in;
         COINBASE_REFRESH_TOKEN = body.refresh_token;
         client = new Client({'accessToken': COINBASE_ACCESS_TOKEN, 'refreshToken': COINBASE_REFRESH_TOKEN});
-        res.send("Object created");
+
+
+        var obj = {
+          access: COINBASE_ACCESS_TOKEN,
+          refrsh: COINBASE_REFRESH_TOKEN,
+          expiry: COINBASE_EXPIRY_TIME
+          }
+          res.json(obj);
+
     });
 });
 
