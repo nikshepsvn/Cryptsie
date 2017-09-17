@@ -127,7 +127,7 @@ server.get('/api/code', function (req, res){
           }
           pushTokens(obj.access, obj.refresh);
           //listAccounts(obj.access, obj.refresh);
-          res.json(obj);
+          res.send("Succesfully logged into Coinbase");
 
     });
 });
@@ -183,6 +183,12 @@ var bot = new builder.UniversalBot(connector, function (session) {
         var card = coinbase.requestCoinbaseOAuthAccess(session);
         var message = new builder.Message(session).addAttachment(card);
         session.send(message);
+    } else if(msg.indexOf("locale=") != -1){
+      //Choose locale/lang
+      var sub = msg.substring(msg.indexOf("=") + 1, msg.length);
+        dbRef.update({
+            "Locale": sub
+          });
     } else if(msg.indexOf("buybtc=") != -1){
       //Wants to buy btc
        price = 1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
