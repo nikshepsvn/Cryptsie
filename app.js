@@ -188,7 +188,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
 server.get('/api/test3', function (req, res) {
     dbRef.on("value", function(snapshot){
-        res.send(snapshot.val().Users.fakeUID.Currencies);
+        res.send(snapshot.val().Currencies);
     }, function(error){
         res.send("Error : " + error.code);
     })
@@ -293,8 +293,7 @@ var networthcounter = 0;
 
 setInterval(function(){
                   var netWorth = getNetworthFromCoinbase();
-                  var userRef = firebase.database().ref("Users/fakeUID/NetWorth");
-                 userRef.set({
+                  dbRef.set({
                      networthcounter: {
                         worth : netWorth
                    }
