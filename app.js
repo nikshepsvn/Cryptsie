@@ -250,9 +250,9 @@ var bot = new builder.UniversalBot(connector, function (session) {
         var eth = "ETH: " + snapshot.val()["ETH"];
         var ltc = "LTC: " + snapshot.val()["LTC"];
         var btc = "BTC: " + snapshot.val()["BTC"];
-        session.send(eth);
-         session.send(btc);
-          session.send(ltc);
+        session.send(eth.toString());
+         session.send(btc.toString());
+          session.send(ltc.toString());
          }, function(error){
           res.send("Error : " + error.code);
        });
