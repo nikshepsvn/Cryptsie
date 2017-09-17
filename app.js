@@ -305,7 +305,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
     //Conds
 
-    else if(msg.indexOf("!all") != -1){
+    else if(msg == "!all"){
         dbRef.on("value", function(snapshot){
         var locale = snapshot.val()["Locale"].toString();
         /*var eth = "ETH: " + snapshot.val()["ETH"] + " ETH = " + locale;
