@@ -1,17 +1,6 @@
 var request = require("request");
 var restify = require('restify');
 var builder = require('botbuilder');
-var firebase = require("firebase");
-var firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-};
-
-firebase.initializeApp(firebaseConfig);
-var defaultDatabase = firebase.database(); //Initialize firebase database
-var dbRef = defaultDatabase.ref();
 
 
 function updateAppPrice(crypto_currency, obj){
@@ -66,25 +55,6 @@ request(options, function (error, response, body) {
 });
 }
 
-function updateFirebasePrice(crypto_currency, drref){
-	var options = {method: 'GET',
-  		url: 'https://min-api.cryptocompare.com/data/pricehistorical',
-  			qs: { fsym: crypto_currency.toUpperCase(), tsyms: 'USD' }
-		};
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
-  body = JSON.parse(body);
-  //session.send(`1 ${crypto_currency} = ${body.amount} ${body.to[0].quotecurrency}`);
-  var curPrice = parseInt(body[crypto_currency.toUpperCase()].USD);
-  //Currency is in USD
-  var curr = crypto_currency.toUpperCase();
-  dbRef.update({
-     curr : curPrice
-    });
-
-  // Use body to do whatever stuff (return from function or send to user etc...). I'm just logging it for now.
-});
-}
 
 // Example:get_price('ETH', 'GBP');
 // Example: get_price('LTC', 'INR');
@@ -92,6 +62,5 @@ request(options, function (error, response, body) {
 module.exports = {
   getPriceFunc: getPrice,
   updateAppPriceFunc: updateAppPrice,
-  updatePrevPriceFunc: updatePrevPrice,
-  updateFirebase: updateFirebasePrice
+  updatePrevPriceFunc: updatePrevPrice
 };
