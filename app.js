@@ -79,16 +79,6 @@ var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
     var msg = session.message.text;
     msg = session.message.text.trim().toLowerCase();
-    if("specialID" in session.userData){
-
-    } else {
-        db.on("value", function(snapshot) {
-            console.log(snapshot.val());
-        }, function (errorObject) {
-           console.log("The read failed: " + errorObject.code);
-        });
-        //session.userData["specialID"] = //
-    }
     if(msg == "c"){
         session.send(session.userData.name);
         //session.send("Yo");
