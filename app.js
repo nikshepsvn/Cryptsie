@@ -39,7 +39,7 @@ var connector = new builder.ChatConnector({
 server.post('/api/messages', connector.listen());
 
 // Listen to returning of Code from OAuth call
-server.get('/api/code', codeToToken);
+server.get('/api/code', coedToToken);
 
 // Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
@@ -61,13 +61,14 @@ var bot = new builder.UniversalBot(connector, function (session) {
 function codeToToken (req, res){
     var options = {
         METHOD : 'POST',
+        url : "https://api.coinbase.com/oauth/token",
         grant_type : 'authorization_code',
         code : req.query.code,
         client_id : "76048590e4cfcd34f3ebd4d3b01f8566447c8dc991f07a74c62e06124e011bed",
         client_secret : "dc9024c8e3e5b672f1e3852e4b6d33b16095003b75db0eeab84fcc66879b3e30",
         redirect_url : "https://www.cryptsie.com/"
     }
-    request(options, "https://api.coinbase.com/oauth/token", function(error, response, body){
+    request(options, function(error, response, body){
         COINBASE_ACCESS_TOKEN = body.access_token;
         COINBASE_EXPIRY_TIME = body.expires_in;
         COINBASE_REFRESH_TOKEN = body.refresh_token;
