@@ -8,6 +8,7 @@ var firebase = require("firebase");
 var pricetools = require('./helpers/getprices.js');
 var coinbase = require('./coinbase.js');
 var request = require('request');
+var bodyParser = require('body-parser');
 
 //Setup Firebase
 var firebaseConfig = {
@@ -71,11 +72,9 @@ var connector = new builder.ChatConnector({
 server.post('/api/messages', connector.listen());
 
 server.get('/api/rest', function (req, res) {
-  request(giveFirebaseURL(""), function (error, response, body) {
-    if(body){
-      res.send(body.UID);
-    }
-});
+  dbRef.once('value').then((snapshot)=>{
+    res.send(snapshot);
+  });
 });
 
 
