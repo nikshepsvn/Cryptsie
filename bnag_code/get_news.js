@@ -1,7 +1,11 @@
 var request = require("request");
 var _ = require("underscore");
 
-function get_news(crypto_currency, no_articles, callback) {
+// getNews takes in the name of a cryptocurrency(bitcoin, ethereum, litecoin),
+// the maximum number of news articles needed and a callback function.
+// The callback function must be a function which takes in 1 parameter which is
+// the JSON of the news data.
+function getNews(crypto_currency, no_articles, callback) {
   var options = { method: 'GET',
     url: 'https://api.cognitive.microsoft.com/bing/v5.0/news/search',
     qs: { q: crypto_currency },
@@ -31,4 +35,8 @@ function get_news(crypto_currency, no_articles, callback) {
   });
 }
 
-// Example: get_news("bitcoin", 1, function(stuff) {console.log(stuff);});
+// Example: get_news("bitcoin", 3, function(stuff) {console.log(stuff);});
+
+module.exports = {
+  getNewsFunc: getNews
+};
