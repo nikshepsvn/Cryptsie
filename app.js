@@ -67,7 +67,7 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
    console.log('%s listening to %s', server.name, server.url);
 });
 
-server.use(restify.plugins.queryParser());
+server.use(restify.plugins.queryParser());  
 
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
@@ -85,6 +85,8 @@ server.get('/api/test', function (req, res) {
     res.send(snapshot.val().UID.toString());
   });
 });
+
+
 // Listen to returning of Code from OAuth call
 server.get('/api/code', function (req, res){
     var options = {
@@ -96,13 +98,17 @@ server.get('/api/code', function (req, res){
         client_secret : "dc9024c8e3e5b672f1e3852e4b6d33b16095003b75db0eeab84fcc66879b3e30",
         redirect_uri : "https://cryptsie.azurewebsites.net/api/coinbase/success/"
     }
+
+    res.send((req.query.code).toString());
+
+    /*
     request(options, function(error, response, body){
         COINBASE_ACCESS_TOKEN = body.access_token;
         COINBASE_EXPIRY_TIME = body.expires_in;
         COINBASE_REFRESH_TOKEN = body.refresh_token;
         client = new Client({'accessToken': COINBASE_ACCESS_TOKEN, 'refreshToken': COINBASE_REFRESH_TOKEN});
         res.send(response.toString());
-    });
+    }); */
 });
 
 
