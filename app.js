@@ -181,7 +181,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
         session.send(message);
     } else if(msg.indexOf("buybtc=") != -1){
       //Wants to buy btc
-       price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
+       price = 1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
        
        dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["BTC"]);
@@ -192,7 +192,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
     } else if(msg.indexOf("buyeth=") != -1){
       //Wants to buy eth
-       price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
+       price = 1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
        dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["ETH"]);
           dbRef.update({
@@ -202,7 +202,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
     } else if(msg.indexOf("buyltc=") != -1){
       //Wants to buy ltc
-         price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
+         price = 1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
       dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["LTC"]);
           dbRef.update({
