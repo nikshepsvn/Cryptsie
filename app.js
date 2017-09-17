@@ -112,7 +112,7 @@ server.get('/api/code', function (req, res){
     }
 
     var options2 = {
-      url: urlVar,
+      url: baseURL,
       method: "POST",
       json: true,
       body: body
