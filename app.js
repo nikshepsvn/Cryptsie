@@ -62,10 +62,6 @@ setInterval(function(){
 }, oneDay); //Updating time
 
 
-pricetools.updateFirebase("eth", dbRef);
-             pricetools.updateFirebase("btc", dbRef);
-             pricetools.updateFirebase("ltc", dbRef);
-             
 ///**** Update Daily time settings [END]
 
 // Setup Restify Server
