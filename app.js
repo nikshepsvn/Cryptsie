@@ -22,7 +22,7 @@ var dbRef = defaultDatabase.ref();
 //var firebaseURL = 'https://bitbot-a45b9.firebaseio.com/.json?print=pretty';
 
 function giveFirebaseURL(path){
-  return 'https://bitbot-a45b9.firebaseio.com/' + path + '.json?print=pretty';
+  return 'https://bitbot-a45b9.firebaseio.com/' + path + '.json';
 }
 
 /////*** Global server variables [START]
