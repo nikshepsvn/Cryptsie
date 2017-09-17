@@ -281,9 +281,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     } else if(msg == "!btc"){
       dbRef.on("value", function(snapshot){
         var locale = snapshot.val()["Locale"].toString().toUpperCase();
-        setTime(function(){
           pricetools.getPriceFunc('BTC', locale, session);
-        }, 1000);
          }, function(error){
           res.send("Error : " + error.code);
        });
@@ -291,9 +289,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     } else if(msg == "!ltc"){
       bRef.on("value", function(snapshot){
         var locale = snapshot.val()["Locale"].toString().toUpperCase();
-        setTime(function(){
-          pricetools.getPriceFunc('LTC', locale, session);
-        }, 1000);
+        pricetools.getPriceFunc('LTC', locale, session);
          }, function(error){
           res.send("Error : " + error.code);
        });
