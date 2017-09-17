@@ -12,7 +12,8 @@ var coinbase = require('./coinbase.js');
 var request = require('request');
 var bodyParser = require('body-parser');
 var express = require('express');
-
+var _ = require("underscore");
+var news = require('./helpers/getnews.js');
 //Setup Firebase
 var firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -20,10 +21,12 @@ var firebaseConfig = {
   databaseURL: process.env.FIREBASE_DATABASE_URL,
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 };
+
 firebase.initializeApp(firebaseConfig);
 var defaultDatabase = firebase.database(); //Initialize firebase database
 var dbRef = defaultDatabase.ref();
 //var firebaseURL = 'https://bitbot-a45b9.firebaseio.com/.json?print=pretty';
+
 
 var COINBASE_ACCESS_TOKEN = '';
 var COINBASE_REFRESH_TOKEN = '';
@@ -67,7 +70,7 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
    console.log('%s listening to %s', server.name, server.url);
 });
 
-server.use(restify.plugins.queryParser());  
+server.use(restify.plugins.queryParser());
 
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
@@ -92,8 +95,8 @@ server.get('/api/code', function (req, res){
 
   var urlVar = "https://api.coinbase.com/oauth/token?code=" + req.query.code + "&grant_type=authorization_code" +
         "&client_id=76048590e4cfcd34f3ebd4d3b01f8566447c8dc991f07a74c62e06124e011bed" +
-        "&client_secret=dc9024c8e3e5b672f1e3852e4b6d33b16095003b75db0eeab84fcc66879b3e30" + 
-        "&redirect_uri=https://cryptsie.azurewebsites.net/api/coinbase/success/" 
+        "&client_secret=dc9024c8e3e5b672f1e3852e4b6d33b16095003b75db0eeab84fcc66879b3e30" +
+        "&redirect_uri=https://cryptsie.azurewebsites.net/api/coinbase/success/"
     var options = {
         url : "https://api.coinbase.com/oauth/token&code=" + req.query.code + "&",
         grant_type : 'authorization_code',
@@ -108,7 +111,7 @@ server.get('/api/code', function (req, res){
     }
 
     //res.send(urlVar);
-    
+
     request.post(options2, function(error, response, body){
         if(error) res.send(error.toString());
         if(body) res.send(body.toString());
@@ -116,8 +119,8 @@ server.get('/api/code', function (req, res){
         COINBASE_EXPIRY_TIME = body.expires_in;
         COINBASE_REFRESH_TOKEN = body.refresh_token;
         client = new Client({'accessToken': COINBASE_ACCESS_TOKEN, 'refreshToken': COINBASE_REFRESH_TOKEN});
-       
-    });  
+
+    });
 });
 
 
@@ -154,12 +157,22 @@ var bot = new builder.UniversalBot(connector, function (session) {
             accounts.forEach(function(acct) {
              session.send('my bal: ' + acct.balance.amount + ' for ' + acct.name);
             });
-        });   
+        });
+    }
+    else if (msg == "news") {
+      var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
+      _.each(holdings, function(holding) {
+        news.getNewsFunc(holding, 3, function(news_data){
+          var send_message = "Latest news regarding "+holding+":-\n";
+          _.each(news_data, function(a_news) {
+            send_message += "\n"+a_news.title + " ("+a_news.source+")";
+          });
+          session.send(send_message);
+        });
+      });
     }
 });
-
-
-
+});
 
 server.get('/api/test3', function (req, res) {
     dbRef.on("value", function(snapshot){
@@ -168,4 +181,3 @@ server.get('/api/test3', function (req, res) {
         res.send("Error : " + error.code);
     })
 });
-    
