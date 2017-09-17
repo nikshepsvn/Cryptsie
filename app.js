@@ -277,7 +277,15 @@ var bot = new builder.UniversalBot(connector, function (session) {
        });
     } else if(msg.indexOf("!net") != -1){
         returnNet(session);
-    } 
+    } else if(msg == "!man"){
+        session.send("!login -- Login in to Coinbase");
+        session.send("!all -- breakdown of your currency");
+        session.send("locale=XYZ -- Set the 3 digit currency code for your locale")
+        session.send("!eth, !btc, !ltd -- current conversation rate in your currency");
+        session.send("buy[eth/ltc/btc]=[amount] -- Buy amount of currency");
+        session.send("sell[eth/ltc/btc]=[amount] -- Sell amount of currency");
+
+    }
 
 
 });
