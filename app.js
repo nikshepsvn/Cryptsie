@@ -55,12 +55,15 @@ setInterval(function(){
              currentTime = Date.now();
              updateTime = currentTime + thirtyMin;
              //Everything should be updated.
-             updateFirebase('ETH', 'USD', session);
-             updateFirebase('BTC', 'USD', session);
-             updateFirebase('LTC', 'USD', session);
+           //  updateFirebase('ETH', 'USD', session);
+           //  updateFirebase('BTC', 'USD', session);
+            // updateFirebase('LTC', 'USD', session);
 
 }, oneDay); //Updating time
 
+  updateFirebase('ETH', 'USD', session);
+  updateFirebase('BTC', 'USD', session);
+             updateFirebase('LTC', 'USD', session);
 
 ///**** Update Daily time settings [END]
 
