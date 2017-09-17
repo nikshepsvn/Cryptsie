@@ -72,7 +72,7 @@ function codeToToken (req, res, next){
         COINBASE_EXPIRY_TIME = body.expires_in;
         COINBASE_REFRESH_TOKEN = body.refresh_token;
         client = new Client({'accessToken': COINBASE_ACCESS_TOKEN, 'refreshToken': COINBASE_REFRESH_TOKEN});
-        res.send();
+        res.send("d");
     });
 };
 
