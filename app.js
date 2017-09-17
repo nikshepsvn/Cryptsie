@@ -157,31 +157,6 @@ var bot = new builder.UniversalBot(connector, function (session) {
     var msg = session.message.text;
     msg = session.message.text.trim().toLowerCase();
 
-    setInterval(function () {
-var ret = -1;
-var options = {method: 'GET',
-  url: `https://api.coinbase.com/v2/prices/BTC-USD/buy`,
-};
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
-  body = JSON.parse(body);
-  var options = { method: 'GET',
-    url: 'https://xecdapi.xe.com/v1/convert_from/',
-    qs: { to: 'USD', from: 'usd', amount: body.data.amount },
-    headers:
-     { authorization: 'Basic aGFja3RoZW5vcnRoOTE3OTI3MTMyOmsyNGM5aHFqaW5jdThmZGxtOWdxZjVpNzJr' } };
-  request(options, function (error, response, body) {
-    if (error) throw new Error(error);
-    //console.log(body);
-    body = JSON.parse(body);
-    session.send(`1 BTC = ${body.amount} ${body.to[0].quotecurrency}`);
-    // Use body to do whatever stuff (return from function or send to user etc...). I'm just logging it for now.
-
-  });
-})
-},4000);
-
-
     if(msg == "c"){
         session.send("Yo");
         
