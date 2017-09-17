@@ -5,7 +5,6 @@ A simple echo bot for the Microsoft Bot Framework.
 var restify = require('restify');
 var builder = require('botbuilder');
 var firebase = require("firebase");
-var admin = require("firebase-admin");
 var pricetools = require('./helpers/getprices.js');
 var coinbase = require('./coinbase.js');
 
@@ -18,14 +17,6 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 var defaultDatabase = firebase.database(); //Initialize firebase database
-
-//Setup ADMIN firebase DB
-
-var db = admin.database();
-var dbRef = db.ref();
-var usersRef = dbRef.ref("UID");
-var ignoreUID = "fakeUID"; 
-
 
 
 /////*** Global server variables [START]
@@ -80,8 +71,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     var msg = session.message.text;
     msg = session.message.text.trim().toLowerCase();
     if(msg == "c"){
-        session.send(session.userData.name);
-        //session.send("Yo");
+        session.send("Yo");
     }
     else if(msg == "a"){
         var card = coinbase.requestCoinbaseOAuthAccess(session);
@@ -95,17 +85,3 @@ var bot = new builder.UniversalBot(connector, function (session) {
       pricetools.getPriceFunc('LTC', 'USD', session);
     }
 });
-
-//TESTING
-
-server.get('/firebase', function (req, res, next) {
-     dbRef.on("value", function(snapshot) {
-            res.json(JSON.parse(snapshot));
-        }, function (errorObject) {
-           console.log("The read failed: " + errorObject.code);
-        });
-});
-
-function queryFirebaseForID(){
-
-}
