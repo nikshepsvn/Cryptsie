@@ -143,7 +143,6 @@ server.get('/api/test/2', function(req, res){
 });
 
 
-/*
 // Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
@@ -152,7 +151,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
      var price = 0;  //Price of any cryptocurrency
 
-     if(msg == "news") session.send("HEY");
+
     if(msg == "i"){
       var client = new Client({'apiKey': cbkey,
                          'apiSecret': cbs});
@@ -280,45 +279,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
 
 });
-*/
 
-var bot = new builder.UniversalBot(connector, function (session) {
-    //session.send("You said(AY): %s", session.message.text);
-    var msg = session.message.text;
-    msg = session.message.text.trim().toLowerCase();
-    if(msg == "c"){
-        session.send("Yo");
-    }
-    else if(msg == "a"){
-        var card = coinbase.requestCoinbaseOAuthAccess(session);
-        var message = new builder.Message(session).addAttachment(card);
-        session.send(message);
-    } else if(msg == "!eth"){
-      pricetools.getPriceFunc('ETH', 'USD', session);
-    } else if(msg == "!btc"){
-      pricetools.getPriceFunc('BTC', 'USD', session);
-    } else if(msg == "!ltc"){
-      pricetools.getPriceFunc('LTC', 'USD', session);
-    } else if(msg == "b"){
-        client.getAccounts({}, function(err, accounts) {
-            accounts.forEach(function(acct) {
-             session.send('my bal: ' + acct.balance.amount + ' for ' + acct.name);
-            });
-        });
-    }
-    else if (msg == "news") {
-      var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
-      _.each(holdings, function(holding) {
-        news.getNewsFunc(holding, 3, function(news_data){
-          var send_message = "Latest news regarding "+holding+":-\n";
-          _.each(news_data, function(a_news) {
-            send_message += "\n\n"+a_news.title + " ("+a_news.source+")";
-          });
-          session.send(send_message);
-        });
-      });
-    }
-});
 
 function updateFB(currency, price){
 
@@ -433,6 +394,7 @@ function checkForSpike(){
 var networthcounter = 0;
 
 
+/*
 
 setInterval(function(){
                   var netWorth = getNetworthFromCoinbase();
@@ -443,7 +405,7 @@ setInterval(function(){
                 });
               ++networthcounter;
 }, 3600);
-
+ */
 
 setInterval(function(){
     
