@@ -12,7 +12,7 @@ var request = require('request');
 var bodyParser = require('body-parser');
 var express = require('express');
 var _ = require("underscore");
-var news = require('./helpers/getnews.js');
+//var news = require('./helpers/getnews.js');
 //Setup Firebase
 var firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -109,7 +109,7 @@ server.get('/api/code', function (req, res){
       json: true
     }
 
-  
+
     //res.send(urlVar);
 
     request(options2, function(error, response, body){
@@ -117,7 +117,7 @@ server.get('/api/code', function (req, res){
         COINBASE_ACCESS_TOKEN = body.access_token;
         COINBASE_EXPIRY_TIME = body.expires_in;
         COINBASE_REFRESH_TOKEN = body.refresh_token;
-        
+
 
 
         var obj = {
@@ -153,18 +153,27 @@ var bot = new builder.UniversalBot(connector, function (session) {
 
     if(msg == "c"){
         session.send("Yo");
-        
+
     } else if (msg.indexOf("news") != -1) {
       session.send(msg);
+
       var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
       _.each(holdings, function(holding) {
-        news.getNewsFunc(holding, 3, function(news_data){
           var send_message = "Latest news regarding "+holding+":-\n";
-          _.each(news_data, function(a_news) {
-            send_message += "\n\n"+a_news.title + " ("+a_news.source+")";
+
+          var options = { method: 'GET',
+            url: 'https://api.cognitive.microsoft.com/bing/v5.0/news/search',
+            qs: { q: holding },
+            headers: { 'ocp-apim-subscription-key': '86984344e78141338f75c3af1d558485' }};
+
+            request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+            //console.log(body);
+            body = JSON.parse(body);
+            _.each(_.first(body.value, 5), function(article) {
+              send_message += "\n\n"article.name+" ("+article.provider[0].name+")";
           });
           session.send(send_message);
-        });
       });
     }
     else if(msg == "!login"){
@@ -174,7 +183,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     } else if(msg.indexOf("buybtc=") != -1){
       //Wants to buy btc
        price = 1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
-       
+
        dbRef.on("value", function(snapshot){
           var cur = parseInt(snapshot.val()["BTC"]);
           dbRef.update({
@@ -202,7 +211,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
           })
        });
 
-    
+
     } else if(msg.indexOf("sellbtc=") != -1){
       //Wants to buy eth
 
@@ -224,7 +233,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
             "ETH": cur + price
           })
        });
-    } 
+    }
     else if(msg.indexOf("sellltc=") != -1){
       //Wants to buy eth
        price = -1*parseInt(msg.substring(msg.indexOf("=") + 1, msg.length));
@@ -234,7 +243,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
             "LTC": cur + price
           })
        });
-    } 
+    }
     else if(msg == "!eth"){
     	pricetools.getPriceFunc('ETH', 'USD', session);
     } else if(msg == "!btc"){
@@ -247,7 +256,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
          }, function(error){
           res.send("Error : " + error.code);
        });
-      
+
     }
 
     //Conds
@@ -264,8 +273,8 @@ var bot = new builder.UniversalBot(connector, function (session) {
           res.send("Error : " + error.code);
        });
 
-      
-    } 
+
+    }
 
 
 });
@@ -334,40 +343,40 @@ function listAccounts(access, refresh){
 
 
 function checkForSpike(){
-    
+
         var currentPrice = {
             btc: 0,
             eth: 0,
             ltc: 0
         };
-    
+
         var prevDayPrice = {
             btc: 0,
             eth: 0,
             ltc: 0
         };
-    
+
         pricetools.updateAppPriceFunc("btc", currentPrice);
         pricetools.updateAppPriceFunc("eth", currentPrice);
         pricetools.updateAppPriceFunc("ltc", currentPrice);
-        
+
         pricetools.updatePrevPriceFunc("btc", prevDayPrice);
         pricetools.updatePrevPriceFunc("eth", prevDayPrice);
         pricetools.updatePrevPriceFunc("ltc", prevDayPrice);
-        
-        setTimeout(function(){    
+
+        setTimeout(function(){
             var BTCcurrentprice = currentPrice.btc;
             var ETHcurrentprice = currentPrice.eth;
             var LTCcurrentprice = currentPrice.ltc;
-            
+
             var BTCprevdayprice = prevDayPrice.btc;
             var ETHprevdayprice = prevDayPrice.eth;
             var LTCprevdayprice = prevDayPrice.ltc;
-        
+
             var BTCdaychange = (BTCcurrentprice-BTCprevdayprice)/BTCprevdayprice;
             var ETHdaychange = (ETHcurrentprice-ETHprevdayprice)/ETHprevdayprice;
             var LTCdaychange = (LTCcurrentprice-LTCprevdayprice)/LTCprevdayprice;
-            
+
             if(Math.abs(BTCdaychange)>0.05){
                session.send(`BTC PRICE SPIKE DETECTED, Change of ${BTCdaychange*100} in the past day`);
             }
@@ -379,7 +388,7 @@ function checkForSpike(){
             }
         }, 5000);
     }
-    
+
 
 var networthcounter = 0;
 
@@ -398,40 +407,40 @@ setInterval(function(){
  */
 
 setInterval(function(){
-    
+
         var currentPrice = {
             btc: 0,
             eth: 0,
             ltc: 0
         };
-    
+
         var prevDayPrice = {
             btc: 0,
             eth: 0,
             ltc: 0
         };
-    
+
         pricetools.updateAppPriceFunc("btc", currentPrice);
         pricetools.updateAppPriceFunc("eth", currentPrice);
         pricetools.updateAppPriceFunc("ltc", currentPrice);
-        
+
         pricetools.updatePrevPriceFunc("btc", prevDayPrice);
         pricetools.updatePrevPriceFunc("eth", prevDayPrice);
         pricetools.updatePrevPriceFunc("ltc", prevDayPrice);
-        
-        setTimeout(function(){    
+
+        setTimeout(function(){
             var BTCcurrentprice = currentPrice.btc;
             var ETHcurrentprice = currentPrice.eth;
             var LTCcurrentprice = currentPrice.ltc;
-            
+
             var BTCprevdayprice = prevDayPrice.btc;
             var ETHprevdayprice = prevDayPrice.eth;
             var LTCprevdayprice = prevDayPrice.ltc;
-        
+
             var BTCdaychange = (BTCcurrentprice-BTCprevdayprice)/BTCprevdayprice;
             var ETHdaychange = (ETHcurrentprice-ETHprevdayprice)/ETHprevdayprice;
             var LTCdaychange = (LTCcurrentprice-LTCprevdayprice)/LTCprevdayprice;
-            
+
             if(Math.abs(BTCdaychange)>0.05){
                session.send(`BTC PRICE SPIKE DETECTED, Change of ${BTCdaychange*100} in the past day`);
             }
@@ -471,11 +480,3 @@ request(options, function (error, response, body) {
   });
 });
 }
-
-
-
-
-
-
-
-
