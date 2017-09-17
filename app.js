@@ -165,7 +165,8 @@ var bot = new builder.UniversalBot(connector, function (session) {
                          'apiSecret': cbs});
 
       client.createAccount({name: 'New Wallet'}, function(err, account) {
-        message.send(account.toString());
+        if(err) message.send(err.toString());
+          message.send(account.toString());
       });
     }
     if(msg == "c"){
