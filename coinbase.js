@@ -27,7 +27,7 @@ function requestCoinbaseOAuthAccess(session){
 
 function createSigninCard(session, URL) {
     return new builder.SigninCard(session)
-        .text('BotFramework Sign-in Card')
+        .text('Coinbase Sign-in Card')
         .button('Sign-in', URL)
 }
 
