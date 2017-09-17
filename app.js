@@ -41,6 +41,11 @@ server.post('/api/messages', connector.listen());
 // Listen to returning of Code from OAuth call
 server.get('/api/code', codeToToken);
 
+
+server.get('/api/coinbase/success', function(req, res){
+    res.send("SUCCESS");
+});
+
 // Create your bot with a function to receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
     //session.send("You said(AY): %s", session.message.text);
@@ -66,7 +71,7 @@ function codeToToken (req, res){
         code : req.query.code,
         client_id : "76048590e4cfcd34f3ebd4d3b01f8566447c8dc991f07a74c62e06124e011bed",
         client_secret : "dc9024c8e3e5b672f1e3852e4b6d33b16095003b75db0eeab84fcc66879b3e30",
-        redirect_url : "https://www.cryptsie.com/"
+        redirect_url : "https://cryptsie.azurewebsites.net/api/coinbase/success/"
     }
     request(options, function(error, response, body){
         COINBASE_ACCESS_TOKEN = body.access_token;
