@@ -7,6 +7,7 @@ var builder = require('botbuilder');
 var firebase = require("firebase");
 var pricetools = require('./helpers/getprices.js');
 var coinbase = require('./coinbase.js');
+var restify = require('restify');
 
 //Setup Firebase
 var firebaseConfig = {
@@ -17,7 +18,12 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 var defaultDatabase = firebase.database(); //Initialize firebase database
+var dbRef = defaultDatabase.ref();
+//var firebaseURL = 'https://bitbot-a45b9.firebaseio.com/.json?print=pretty';
 
+function giveFirebaseURL(path){
+  return 'https://bitbot-a45b9.firebaseio.com/' + path + '.json?print=pretty';
+}
 
 /////*** Global server variables [START]
 let oneDay = 24*3600*1000; //Milliseconds a day
@@ -65,7 +71,11 @@ var connector = new builder.ChatConnector({
 server.post('/api/messages', connector.listen());
 
 server.get('/api/rest', function (req, res) {
-  res.send("hey)");
+  request(giveFirebaseURL(""), function (error, response, body) {
+    if(body){
+      res.json(body["UID"]);
+    }
+});
 });
 
 
