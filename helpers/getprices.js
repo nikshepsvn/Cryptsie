@@ -74,7 +74,7 @@ request(options, function (error, response, body) {
     if (error) throw new Error(error);
     //console.log(body);
     body = JSON.parse(body);
-     var eth = `ETH: ${amount} = ${(parseInt(body.from[0].mid)*amount).toString()} ${body.from[0].quotecurrency}`
+     var eth = `${crypto_currency}: ${amount} = ${(parseInt(body.from[0].mid)*amount).toString()} ${body.from[0].quotecurrency}`
     session.send(eth.toString());
     // Use body to do whatever stuff (return from function or send to user etc...). I'm just logging it for now.
   });
