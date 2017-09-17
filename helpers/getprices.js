@@ -42,7 +42,7 @@ request(options, function (error, response, body) {
   body = JSON.parse(body);
   var options = { method: 'GET',
     url: 'https://xecdapi.xe.com/v1/convert_from/',
-    qs: { to: user_currency, from: 'usd', amount: body.data.amount },
+    qs: { to: 'usd', from: user_currency, amount: body.data.amount },
     headers:
      { authorization: 'Basic aGFja3RoZW5vcnRoOTE3OTI3MTMyOmsyNGM5aHFqaW5jdThmZGxtOWdxZjVpNzJr' } };
   request(options, function (error, response, body) {
