@@ -58,7 +58,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     }
 });
 
-function codeToToken (req, res, next){
+function codeToToken (req, res){
     var options = {
         METHOD : 'POST',
         grant_type : 'authorization_code',
@@ -72,7 +72,7 @@ function codeToToken (req, res, next){
         COINBASE_EXPIRY_TIME = body.expires_in;
         COINBASE_REFRESH_TOKEN = body.refresh_token;
         client = new Client({'accessToken': COINBASE_ACCESS_TOKEN, 'refreshToken': COINBASE_REFRESH_TOKEN});
-        res.send("d");
+        res.send(response.toString());
     });
 };
 
