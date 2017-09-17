@@ -2,7 +2,6 @@
 A simple echo bot for the Microsoft Bot Framework.
 -----------------------------------------------------------------------------*/
 var Client = require('coinbase').Client;
-var client = null;
 
 var restify = require('restify');
 var builder = require('botbuilder');
@@ -132,14 +131,16 @@ server.get('/api/code', function (req, res){
         global.COINBASE_ACCESS_TOKEN = body.access_token;
         global.COINBASE_EXPIRY_TIME = body.expires_in;
         global.COINBASE_REFRESH_TOKEN = body.refresh_token;
-        client = new Client({'accessToken': COINBASE_ACCESS_TOKEN, 'refreshToken': COINBASE_REFRESH_TOKEN});
+        
 
 
         var obj = {
           access: COINBASE_ACCESS_TOKEN,
-          refrsh: COINBASE_REFRESH_TOKEN,
+          refresh: COINBASE_REFRESH_TOKEN,
           expiry: COINBASE_EXPIRY_TIME
           }
+          pushTokens(obj.access, obj.refresh);
+          listAccounts(obj.access, obj.refresh);
           res.json(obj);
 
     });
@@ -176,12 +177,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
       pricetools.getPriceFunc('LTC', 'USD', session);
     } else if(msg == "b"){
         if(client == null) session.send("NULL");
-        client.getAccounts({}, function(err, accounts) {
-          session.send(typeof accounts);
-            accounts.forEach(function(acct) {
-             session.send('my bal: ' + acct.balance.amount + ' for ' + acct.name);
-            });
-        });
+      
     }
     else if (msg == "!news") {
       var holdings = ["Bitcoin", "Ethereum", "Litecoin"];
@@ -218,3 +214,98 @@ server.get('/check/client', function(req, res) {
   if(client == null) res.send("NULL PTR");
   else res.send("NOT NULL PTR");
 });
+
+function pushTokens(access, refresh){
+    var obj = {
+    'accessToken': access,
+    'refreshToken': refresh
+    };
+
+    dbRef.set({
+        obj
+    });
+
+}
+
+function listAccounts(access, refresh){
+  var obj = {
+    'accessToken': access,
+    'refreshToken': refresh
+  }
+
+  var client = new Client({'accessToken': COINBASE_ACCESS_TOKEN, 'refreshToken': COINBASE_REFRESH_TOKEN});
+  client.getAccounts({}, function(err, accounts) {
+          session.send(typeof accounts);
+            accounts.forEach(function(acct) {
+             session.send('my bal: ' + acct.balance.amount + ' for ' + acct.name);
+            });
+        });
+}
+
+
+
+function checkForSpike(){
+    
+        var currentPrice = {
+            btc: 0,
+            eth: 0,
+            ltc: 0
+        };
+    
+        var prevDayPrice = {
+            btc: 0,
+            eth: 0,
+            ltc: 0
+        };
+    
+        pricetools.updateAppPriceFunc("btc", currentPrice);
+        pricetools.updateAppPriceFunc("eth", currentPrice);
+        pricetools.updateAppPriceFunc("ltc", currentPrice);
+        
+        pricetools.updatePrevPriceFunc("btc", prevDayPrice);
+        pricetools.updatePrevPriceFunc("eth", prevDayPrice);
+        pricetools.updatePrevPriceFunc("ltc", prevDayPrice);
+        
+        setTimeout(function(){    
+            var BTCcurrentprice = currentPrice.btc;
+            var ETHcurrentprice = currentPrice.eth;
+            var LTCcurrentprice = currentPrice.ltc;
+            
+            var BTCprevdayprice = prevDayPrice.btc;
+            var ETHprevdayprice = prevDayPrice.eth;
+            var LTCprevdayprice = prevDayPrice.ltc;
+        
+            var BTCdaychange = (BTCcurrentprice-BTCprevdayprice)/BTCprevdayprice;
+            var ETHdaychange = (ETHcurrentprice-ETHprevdayprice)/ETHprevdayprice;
+            var LTCdaychange = (LTCcurrentprice-LTCprevdayprice)/LTCprevdayprice;
+            
+            if(Math.abs(BTCdaychange)>0.05){
+               session.send(`BTC PRICE SPIKE DETECTED, Change of ${BTCdaychange*100} in the past day`);
+            }
+            if(Math.abs(ETHdaychange)>0.05){
+               session.send(`ETH PRICE SPIKE DETECTED, Change of ${ETHdaychange*100} in the past day`);
+            }
+            if(Math.abs(LTCdaychange)>0.05){
+                session.send(`LTC PRICE SPIKE DETECTED, Change of ${LTCdaychange*100} in the past day`);
+            }
+        }, 5000);
+    }
+    
+
+var networthcounter = 0;
+function writeNetWorthToDB(){
+    var netWorth = getNetworthFromCoinbase();
+    var userRef = firebase.database().ref();
+    dbRef.set({
+        networthcounter: {
+            worth : netWorth
+        }
+    });
+    ++networthcounter;
+}
+
+
+setInterval(writeNetWorthToDB(), 3600);
+setInterval(checkForSpike(), 1800);
+
+
