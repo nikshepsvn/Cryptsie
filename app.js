@@ -169,7 +169,11 @@ var bot = new builder.UniversalBot(connector, function (session) {
     } else if(msg == "!ltc"){
       pricetools.getPriceFunc('LTC', 'USD', session);
     } else if(msg == "b"){
-        
+         dbRef.on("value", function(snapshot){
+        res.send(snapshot.val().Currencies);
+         }, function(error){
+          res.send("Error : " + error.code);
+       });
       
     }
     else if (msg == "!news") {
@@ -191,7 +195,7 @@ server.get('/api/test3', function (req, res) {
         res.send(snapshot.val().Currencies);
     }, function(error){
         res.send("Error : " + error.code);
-    })
+    });
 });
 
 server.get('/api/tokens', function(req, res){
@@ -207,6 +211,11 @@ server.get('/check/client', function(req, res) {
   if(client == null) res.send("NULL PTR");
   else res.send("NOT NULL PTR");
 });
+
+server.get('/check/prices', function(req, res){
+  res.json(prices);
+});
+
 
 function pushTokens(access, refresh){
     var obj = {
