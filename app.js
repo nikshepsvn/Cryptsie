@@ -71,7 +71,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
     var msg = session.message.text;
     msg = session.message.text.trim().toLowerCase();
     if(msg == "c"){
-        session.send(session.userData);
+        session.send(session.userData.name);
         //session.send("Yo");
     }
     else if(msg == "a"){
