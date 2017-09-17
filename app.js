@@ -21,6 +21,9 @@ var firebaseConfig = {
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 };
 
+var cbs = 'ujAdJYUNjHP4AVcXGRM43NbgKUywHrAB';
+var cbkey = '5madPPZX3455Ns7O';
+
 firebase.initializeApp(firebaseConfig);
 var defaultDatabase = firebase.database(); //Initialize firebase database
 var dbRef = defaultDatabase.ref();
@@ -157,6 +160,14 @@ var bot = new builder.UniversalBot(connector, function (session) {
     var msg = session.message.text;
     msg = session.message.text.trim().toLowerCase();
 
+    if(msg == "i"){
+      var client = new Client({'apiKey': cbkey,
+                         'apiSecret': cbs});
+
+      client.createAccount({name: 'New Wallet'}, function(err, account) {
+        message.send(account.toString());
+      });
+    }
     if(msg == "c"){
         session.send("Yo");
         
