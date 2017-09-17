@@ -175,7 +175,7 @@ var bot = new builder.UniversalBot(connector, function (session) {
         session.send("Yo");
         
     }
-    else if(msg == "a"){
+    else if(msg == "!login"){
         var card = coinbase.requestCoinbaseOAuthAccess(session);
         var message = new builder.Message(session).addAttachment(card);
         session.send(message);
