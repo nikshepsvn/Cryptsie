@@ -12,6 +12,9 @@ var request = require('request');
 var bodyParser = require('body-parser');
 var express = require('express');
 var _ = require("underscore");
+var indico = require('indico.io');
+indico.apiKey =  process.env.INDICO_KEY;
+
 //var news = require('./helpers/getnews.js');
 //Setup Firebase
 var firebaseConfig = {
