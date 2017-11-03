@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+	<link rel="icon" type="image/png" href="img/bot_color.png">
+	<title>Cryptbot</title>
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	<!-- google fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+	<!-- css -->
+	<link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark">
+		<a class="navbar-brand ml-4" href="#">
+			<img src="img/logo.svg" height="40px" width="auto" alt="logo">
+		</a>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item mr-4 active">
+					<a class="nav-link" href="#">
+						<img class="pr-1 pb-1" src="img/dashboard.svg" height="20" width="auto">
+						Dashboard<span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item mr-4">
+						<a class="nav-link" href="bot.html">
+							<img class="pr-1 pb-1" src="img/bot.svg" height="23" width="auto">
+						Bot</a>
+					</li>
+					<li class="nav-item mr-4">
+						<a class="nav-link" href="news.html">
+							<img class="pr-1 pb-1" src="img/news.svg" height="20" width="auto">
+						News</a>
+					</li>
+					<li class="nav-item dropdown mr-4">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Nikshep
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" href="#">Notifications</a>
+							<a class="dropdown-item" href="#">Setting</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<h1 style = "text-align: center; margin-top:2%;">TRADE HISTORY</h1>
+		<section class="card-columns mx-5 mt-3" style="text-align: center">
+			<div class="card">
+						<div class="card-body">
+							<h4 class="card-title">BUY ORDER</h4>
+							<p class="card-text">Successfully bought 2BTC</p>
+							<p class="card-text"><small class="text-muted">Last updated 7 mins ago</small></p>
+						</div>
+			</div>
+			<div class="card">
+				<div class="card-body">
+					<h4 class="card-title">SELL ORDER</h4>
+					<p class="card-text">Successfully sold 1BTC</p>
+					<p class="card-text"><small class="text-muted">Last updated 23 mins ago</small></p>
+				</div>
+				</div>
+				<div class="card">
+						<div class="card-body">
+							<h4 class="card-title">BUY ORDER</h4>
+							<p class="card-text">Successfully bought 2BTC</p>
+							<p class="card-text"><small class="text-muted">Last updated 30mins ago</small></p>
+						</div>
+					</div>
+					<div class="card">
+							<div class="card-body">
+								<h4 class="card-title">BUY ORDER</h4>
+								<p class="card-text">Successfully bought 15ETH</p>
+								<p class="card-text"><small class="text-muted">Last updated 55 mins ago</small></p>
+							</div>
+						</div>
+						<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">BUY ORDER</h4>
+									<p class="card-text">Successfully bought 20ETH</p>
+									<p class="card-text"><small class="text-muted">Last updated 57 mins ago</small></p>
+								</div>
+							</div>
+							<div class="card">
+									<div class="card-body">
+										<h4 class="card-title">SELL ORDER</h4>
+										<p class="card-text">Successfully sold 100LTC</p>
+										<p class="card-text"><small class="text-muted">Last updated 59 mins ago</small></p>
+									</div>
+								</div>
+			</section>
+			<h1 style = "text-align: center; margin-top:3%;"> BALANCE</h1>
+			<section class="card-columns mx-5 mt-3" style="display:block; text-align: center; margin:0 auto;"></section>
+			<div class="card" style="text-align:center;">
+					<div class="card-body">
+						<h4 class="card-title">CURRENT USD IN ACCOUNT</h4>
+						<p class="card-text">$320.23</p>
+						<p class="card-text"><small class="text-muted">Last updated 59 secs ago</small></p>
+					</div>
+				</div>
+			</section>
+			<h1 style = "text-align: center; margin-top:3%;	"> HOLDINGS</h1>
+			<div style="position: relative; height:30vh; width:30vw; margin:0 auto;">
+					<canvas id="myChart"></canvas>
+			</div>
+
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+			<script>
+			var ctx = document.getElementById('myChart').getContext('2d');
+			var chart = new Chart(ctx, {
+				// The type of chart we want to create
+				type: 'line',
+
+				// The data for our dataset
+				data: {
+					labels: ["January", "February", "March", "April", "May", "June", "July"],
+					datasets: [{
+						label: "Value of Holdings in USD",
+						backgroundColor: 'rgb(255, 99, 132)',
+						borderColor: 'rgb(255, 99, 132)',
+						data: [0, 100, 50, 200, 120, 350, 490],
+
+					}]
+				},
+
+				// Configuration options go here
+				options: {}
+			});
+			</script>
+			<section class="card-columns mx-5 mt-3" style="display:block; text-align: center;"></section>
+			<div class="card" style="text-align:center;">
+					<div class="card-body">
+						<h4 class="card-title">CURRENT BTC IN ACCOUNT</h4>
+						<p class="card-text">2.3 BTC</p>
+						<p class="card-text"><small class="text-muted">Last updated 59 secs ago</small></p>
+					</div>
+				</div>
+				<div class="card" style="text-align:center;">
+						<div class="card-body">
+							<h4 class="card-title">CURRENT ETH IN ACCOUNT</h4>
+							<p class="card-text">21 ETH</p>
+							<p class="card-text"><small class="text-muted">Last updated 12 secs ago</small></p>
+						</div>
+					</div>
+					<div class="card" style="text-align:center;">
+							<div class="card-body">
+								<h4 class="card-title">CURRENT LTC IN ACCOUNT</h4>
+								<p class="card-text">12 LTC</p>
+								<p class="card-text"><small class="text-muted">Last updated 32 secs ago</small></p>
+							</div>
+						</div>
+			</section>
+		<!-- js framework -->
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+	</body>
+	</html>
